@@ -101,6 +101,14 @@ int main()
 	ncPrint((char*)sampleDataModuleAddress);
 	ncNewline();
 
+	ncNewline();
+	ncPrintDec(getSysYear());
+	ncNewline();
+	ncPrintDec(getSysMonth());
+	ncNewline();
+	ncPrintDec(getSysDayOfWeek());
+	ncNewline();
+
 	ncPrint("[Finished]");
 	return 0;
 }
