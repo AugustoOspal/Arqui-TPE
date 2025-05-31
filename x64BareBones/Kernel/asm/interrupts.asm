@@ -14,9 +14,11 @@ GLOBAL _irq04Handler
 GLOBAL _irq05Handler
 
 GLOBAL _exception0Handler
+GLOBAL _int80Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
+EXTERN syscallDispatcher
 
 SECTION .text
 
@@ -142,6 +144,20 @@ _irq05Handler:
 ;Zero Division Exception
 _exception0Handler:
 	exceptionHandler 0
+
+; Manejador para la interrupcion 0x80h (syscalls)
+_int80Handler:
+    pushState
+
+    mov rdi, rsp
+    call syscallDispatcher
+
+    ; El valor de retorno de la syscall (si lo hay) deberia estar en rax
+    ; despues de que syscallDispatcher retorne. popState lo restaura
+
+    popState
+    iretq
+
 
 haltcpu:
 	cli
