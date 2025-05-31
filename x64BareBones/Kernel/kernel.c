@@ -54,6 +54,7 @@ int main()
 	load_idt();
 	ncPrint("Welcome to BareBones");
 	putPixel(0x00FF0000, 20, 20);
+	drawChar('R', 0x00FF0000, 0, 0);
 	ncNewline();
 	return 0;
 }
