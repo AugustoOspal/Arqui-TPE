@@ -17,4 +17,6 @@ unsigned int getSysDayOfMonth(void);
 unsigned int getSysMonth(void);
 unsigned int getSysYear(void);
 
+unsigned int strlenght(const char* str);
+
 #endif

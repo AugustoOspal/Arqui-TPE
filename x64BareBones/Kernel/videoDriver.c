@@ -1,6 +1,7 @@
+#include <lib.h>
+#include <fonts.h>
 #include <stdint.h>
 #include <stddef.h>
-#include <fonts.h>
 #include <videoDriver.h>
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -73,5 +74,14 @@ void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
 				putPixel(hexColor, x + j, y + i);
 			}
 		}
+	}
+}
+
+void drawString(const char* str, uint32_t hexColor, uint64_t x, uint64_t y)
+{
+	unsigned int strlen = strlenght(str);
+	for (unsigned int i = 0; i < strlen; i++)
+	{
+		drawChar(str[i], hexColor, x + (FONT_CHAR_WITH_BYTES * 8 + FONT_CHAR_GAP) * i, y);
 	}
 }
