@@ -57,6 +57,8 @@ void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
 	Funciones implementadas por nosotros
 */
 
+// TODO: Ninguna de estas funciones cheuqea el ancho y largo de la pantalla
+
 void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
 {
 	font_char_p bitmap = getCharBitMap(c);
@@ -65,7 +67,7 @@ void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
 
 	for (unsigned int i = 0; i < FONT_CHAR_HEIGHT_BYTES; i++)
 	{
-		for (unsigned int j = 0; j < FONT_CHAR_WITH_BYTES * 8; j++)
+		for (unsigned int j = 0; j < FONT_CHAR_WIDTH_BYTES * 8; j++)
 		{
 			// 0x80 = 1000 0000b
 			// No me gusta lo de poner uint_8 pero no se me ocurrio otra cosa
@@ -82,6 +84,26 @@ void drawString(const char* str, uint32_t hexColor, uint64_t x, uint64_t y)
 	unsigned int strlen = strlenght(str);
 	for (unsigned int i = 0; i < strlen; i++)
 	{
-		drawChar(str[i], hexColor, x + (FONT_CHAR_WITH_BYTES * 8 + FONT_CHAR_GAP) * i, y);
+		drawChar(str[i], hexColor, x + (FONT_CHAR_WIDTH_BYTES * 8 + FONT_CHAR_GAP) * i, y);
 	}
+}
+
+void drawRectangle(uint64_t width, uint64_t heigth, uint32_t hexColor, uint64_t x, uint64_t y)
+{
+	for (uint64_t i = x; i < x + width; i++)
+	{
+		for (uint64_t j = y; j < y + heigth; j++)
+		{
+			putPixel(hexColor, i, j);
+		}
+	}
+}
+
+/*
+	TODO: Esto no se si esta bien asi o habria que borrar todo el buffer
+*/
+
+void clearScreen(void)
+{
+	drawRectangle(VBE_mode_info->width, VBE_mode_info->height, 0x00000000, 0, 0);
 }

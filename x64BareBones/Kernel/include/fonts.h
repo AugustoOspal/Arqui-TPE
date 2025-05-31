@@ -8,7 +8,7 @@
 
 // Dimensiones de las fuentes
 #define FONT_CHAR_HEIGHT_BYTES 16
-#define FONT_CHAR_WITH_BYTES 1
+#define FONT_CHAR_WIDTH_BYTES 1
 
 // Cantidad de pixeles de espacio entre chars (Horizontal)
 #define FONT_CHAR_GAP 1

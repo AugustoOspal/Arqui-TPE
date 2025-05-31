@@ -52,9 +52,8 @@ void * initializeKernelBinary()
 int main()
 {	
 	load_idt();
-	ncPrint("Welcome to BareBones");
-	putPixel(0x00FF0000, 20, 20);
 	drawString("Hello World!", 0x00FF0000, 0, 0);
-	ncNewline();
+	drawRectangle(200, 200, 0x00FF0000, 20, 20);
+	// clearScreen();
 	return 0;
 }
