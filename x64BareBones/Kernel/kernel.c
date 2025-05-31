@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <stdint.h>
 #include <string.h>
-// #include <videoDriver.h>
+#include <videoDriver.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
 #include <idtLoader.h>
@@ -53,6 +53,7 @@ int main()
 {	
 	load_idt();
 	ncPrint("Welcome to BareBones");
+	putPixel(0x00FF0000, 20, 20);
 	ncNewline();
 	return 0;
 }
