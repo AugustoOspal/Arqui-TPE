@@ -68,8 +68,7 @@ void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
 		{
 			// 0x80 = 1000 0000b
 			// No me gusta lo de poner uint_8 pero no se me ocurrio otra cosa
-			// TODO: cambiar eso
-			if ((uint8_t)bitmap[i] & (0x80 >> j))
+			if (bitmap[i] & (0x80 >> j))
 			{
 				putPixel(hexColor, x + j, y + i);
 			}
