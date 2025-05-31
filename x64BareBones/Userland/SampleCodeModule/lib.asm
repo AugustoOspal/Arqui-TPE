@@ -1,9 +1,9 @@
-GLOBAL read
-GLOBAL write_stdin
-GLOBAL get_date_time
-GLOBAL screen_clear
-GLOBAL change_color
-GLOBAL zoom
+GLOBAL read_sys
+GLOBAL write_sys
+GLOBAL get_date_time_sys
+GLOBAL screen_clear_sys
+GLOBAL change_color_sys
+GLOBAL zoom_sys	
 
 %macro pushState 0
 	push rax
@@ -42,14 +42,14 @@ GLOBAL zoom
 %endmacro
 
 ;$$$$$$$$$$$$$$$$$$$$$$$$$$$
-; Funcion : read
+; Funcion : read_sys
 ;$$$$$$$$$$$$$$$$$$$$$$$$$$$
 ; Argumentos:
 ;   1 - buffer
 ;   2 - count
 ;$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-read:
+read_sys:
     pushState
 
     mov rax, ; Syscall number for read
@@ -62,15 +62,15 @@ read:
     
     ret
 
-;$$$$$$$$$$$$$$$$$$$$$$$$$$$
-; Funcion : write_stdin
-;$$$$$$$$$$$$$$$$$$$$$$$$$$$
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Funcion : write_stdin_sys
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 ; Argumentos:
 ;   1 - string
 ;   2 - count
-;$$$$$$$$$$$$$$$$$$$$$$$$$$$
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-write_stdin:
+write_sys:
     pushState
 
     mov rax, ; Syscall number for write
@@ -84,11 +84,11 @@ write_stdin:
     ret
 
 
-;$$$$$$$$$$$$$$$$$$$$$$$$$$$
-; Function : get_date_time 
-;$$$$$$$$$$$$$$$$$$$$$$$$$$$
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Function : get_date_time_sys 
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-get_date_time: 
+get_date_time_sys: 
 	pushState
 	mov rax, ; Syscall number for get_date_time
 	int 80h
@@ -96,11 +96,11 @@ get_date_time:
 
 	ret
 
-;$$$$$$$$$$$$$$$$$$$$$$$$$$$
-; Function : screen_clear 
-;$$$$$$$$$$$$$$$$$$$$$$$$$$$
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Function : screen_clear_sys 
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-screen_clear: 
+screen_clear_sys: 
 	pushState
 	mov rax, ; Syscall number for screen_clear
 	int 80h
@@ -108,11 +108,11 @@ screen_clear:
 
 	ret
 
-;$$$$$$$$$$$$$$$$$$$$$$$$$$$
-; Function : change_color 
-;$$$$$$$$$$$$$$$$$$$$$$$$$$$
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Function : change_color_sys 
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-change_color:
+change_color_sys:
 	pushState
 	
 	mov rax, ; Syscall number for change_color
@@ -123,10 +123,10 @@ change_color:
 	ret
 
 ;$$$$$$$$$$$$$$$$$$$$$$$$$$$
-; Function : zoom 
+; Function : zoom_sys 
 ;$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-zoom:
+zoom_sys:
 	pushState
 
 	mov rax, ; Syscall number for zoom
