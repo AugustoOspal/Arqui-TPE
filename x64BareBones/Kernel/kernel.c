@@ -5,6 +5,8 @@
 #include <moduleLoader.h>
 #include <naiveConsole.h>
 #include <idtLoader.h>
+#include <keyboardDriver.h>
+#include <syscalls.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -55,5 +57,8 @@ int main()
 	drawString("Hello World!", 0x00FF0000, 0, 0);
 	drawRectangle(200, 200, 0x00FF0000, 20, 20);
 	// clearScreen();
+	char buffer[100];
+    sys_read(STDIN, buffer, sizeof(buffer));
+    drawString(buffer, 0x00FF0000, 0, 0);
 	return 0;
 }

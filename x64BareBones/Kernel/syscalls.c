@@ -1,17 +1,41 @@
 #include <syscalls.h>
 #include <naiveConsole.h>
+#include <videoDriver.h>
+#include <stddef.h>
 
 // No esta terminado, es un ejemplo nada mas
 static void sys_write(uint64_t fd, const char *str, uint64_t count) 
 {
-    // stdout
-    if (fd == 1) 
-    { 
-        for (unsigned int i = 0; i < count; i++)
-        {
-            ncPrintChar(str[i]);
-        }
+    switch(fd){
+        case STDOUT:
+            for (uint64_t i = 0; i < count; i++) {
+                ncPrintChar(str[i]);
+            }
+            break;
+        case STDERR:
+            for (uint64_t i = 0; i < count; i++) {
+                ncPrintChar(str[i]);
+            }
+            break;
+        default:
+            break;
     }
+}
+
+static void sys_read(FD fd, const char *buffer, size_t count) 
+{
+    switch(fd){
+        case STDIN:
+            load_buffer(buffer, count);
+            break;
+        default:
+            break;
+    }
+}
+
+static void sys_screen_clear()
+{
+    clearScreen();
 }
 
 void syscallDispatcher(Registers_t *regs) 
@@ -32,6 +56,20 @@ void syscallDispatcher(Registers_t *regs)
             sys_write(arg1, (const char *)arg2, arg3);
             regs->rax = arg1; // Bytes escritos
             break;
+        
+        // case 2: 
+            
+        // case 3: 
+
+        // case 4: 
+
+        // case 5: 
+
+        // case 6: 
+
+        // case 7: 
+
+        // case 8: 
 
         default:
             // Syscall desconocida o no implementada

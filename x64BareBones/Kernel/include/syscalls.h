@@ -24,6 +24,12 @@ typedef struct {
     uint64_t rax; // rax es el último en ser pusheado por pushState
 } Registers_t;
 
+typedef enum{
+    STDIN = 0,
+    STDOUT,
+    STDERR
+}FD;
+
 void syscallDispatcher(Registers_t *regs);
 
 #endif /* SYSCALLS_H_ */
