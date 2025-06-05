@@ -52,8 +52,20 @@ void * initializeKernelBinary()
 int main()
 {	
 	load_idt();
-	drawString("Hello World!", 0x00FF0000, 0, 0);
-	drawRectangle(200, 200, 0x00FF0000, 20, 20);
+
+	// drawString("Hello World!", 0x00FF0000, 0, 0);
+	// drawRectangle(200, 200, 0x00FF0000, 20, 20);
+
 	// clearScreen();
+
+	drawHexa(0x20, 0x00FF0000, 0, 0);
+	drawDecimal(1234, 0x00FF0000, 0, 20);
+
+	while (1)
+	{
+		// Wait for interrupts
+	}
+	
+
 	return 0;
 }

@@ -7,6 +7,8 @@ GLOBAL getSysDayOfMonth
 GLOBAL getSysMonth
 GLOBAL getSysYear
 
+GLOBAL getKeyCode
+
 section .text
 	
 cpuVendor:
@@ -176,6 +178,25 @@ getSysYear:
 
 	call convertBCDtoDec 
 
+	mov rsp, rbp
+	pop rbp
+	ret
+
+
+getKeyCode:
+	push rbp
+	mov rbp, rsp
+	
+	mov rax, 0      ; Valor de retorno por defecto: 0 (ningún carácter / no imprimible)
+
+	in al, 64h		; Leer el puerto de estado del controlador del teclado (flags)
+	test al, 0x01	; Comprobar el bit 0 (Output Buffer Full - OBF)
+	jz .exit_gk		; Si no está lleno (no hay tecla), saltar al final (RAX ya es 0)
+
+	; Una tecla está disponible, leerla
+	in al, 60h 		; Leer el scancode del puerto de datos del teclado
+
+.exit_gk:
 	mov rsp, rbp
 	pop rbp
 	ret

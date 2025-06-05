@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <videoDriver.h>
+
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
 	uint8_t window_a;			// deprecated
@@ -54,29 +55,66 @@ void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
 }
 
 /*
-	Funciones implementadas por nosotros
+	Nuestra parte de la implemntacion
 */
 
 // TODO: Ninguna de estas funciones cheuqea el ancho y largo de la pantalla
 
 void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
 {
-	font_char_p bitmap = getCharBitMap(c);
-	if (bitmap == NULL)
-		return;
+    font_char_p bitmap = getCharBitMap(c);
+    if (bitmap == NULL)
+        return;
 
-	for (unsigned int i = 0; i < FONT_CHAR_HEIGHT_BYTES; i++)
-	{
-		for (unsigned int j = 0; j < FONT_CHAR_WIDTH_BYTES * 8; j++)
-		{
-			// 0x80 = 1000 0000b
-			// No me gusta lo de poner uint_8 pero no se me ocurrio otra cosa
-			if (bitmap[i] & (0x80 >> j))
-			{
-				putPixel(hexColor, x + j, y + i);
-			}
-		}
-	}
+    for (unsigned int i = 0; i < FONT_CHAR_HEIGHT_BYTES; i++)
+    {
+        for (unsigned int j = 0; j < FONT_CHAR_WIDTH_BYTES; j++) // MODIFICADO: quitado '* 8'
+        {
+            // 0x80 = 1000 0000b
+            if (bitmap[i] & (0x80 >> j))
+            {
+                putPixel(hexColor, x + j, y + i);
+            }
+        }
+    }
+}
+
+static uint32_t uint64ToString(uint64_t value, char * buffer, uint32_t base)
+{
+    char *p = buffer;
+    char *p1, *p2;
+    uint32_t digits = 0;
+
+    // Handle 0 explicitly, otherwise empty string appears
+    if (value == 0) {
+        *p++ = '0';
+        digits = 1;
+    } else {
+        //Calculate characters for each digit
+        do
+        {
+            uint32_t remainder = value % base;
+            *p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+            digits++;
+        }
+        while (value /= base);
+    }
+
+    // Terminate string in buffer.
+    *p = 0;
+
+    //Reverse string in buffer.
+    p1 = buffer;
+    p2 = p - 1;
+    while (p1 < p2)
+    {
+        char tmp = *p1;
+        *p1 = *p2;
+        *p2 = tmp;
+        p1++;
+        p2--;
+    }
+    return digits;
 }
 
 void drawString(const char* str, uint32_t hexColor, uint64_t x, uint64_t y)
@@ -84,7 +122,7 @@ void drawString(const char* str, uint32_t hexColor, uint64_t x, uint64_t y)
 	unsigned int strlen = strlenght(str);
 	for (unsigned int i = 0; i < strlen; i++)
 	{
-		drawChar(str[i], hexColor, x + (FONT_CHAR_WIDTH_BYTES * 8 + FONT_CHAR_GAP) * i, y);
+		drawChar(str[i], hexColor, x + (FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP) * i, y);
 	}
 }
 
@@ -97,6 +135,31 @@ void drawRectangle(uint64_t width, uint64_t heigth, uint32_t hexColor, uint64_t 
 			putPixel(hexColor, i, j);
 		}
 	}
+}
+
+void drawDecimal(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y)
+{
+    char buffer[21]; // Max 20 digits for uint64_t in decimal + null terminator
+    uint64ToString(value, buffer, 10);
+    drawString(buffer, hexColor, x, y);
+}
+
+void drawHexa(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y)
+{
+    char buffer[19]; // "0x" + 16 hex digits for uint64_t + null terminator
+    buffer[0] = '0';
+    buffer[1] = 'x';
+    uint64ToString(value, buffer + 2, 16);
+    drawString(buffer, hexColor, x, y);
+}
+
+void drawBin(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y)
+{
+    char buffer[67]; // "0b" + 64 binary digits for uint64_t + null terminator
+    buffer[0] = '0';
+    buffer[1] = 'b';
+    uint64ToString(value, buffer + 2, 2);
+    drawString(buffer, hexColor, x, y);
 }
 
 /*
