@@ -70,11 +70,41 @@ uint16_t getScreenHeight()
     return VBE_mode_info->height;
 }
 
+static uint8_t isValidScreenCoordinate(uint16_t x, uint16_t y)
+{
+    uint16_t width = getScreenWidth();
+    uint16_t height = getScreenHeight();
+
+    return x >= 0 && x < width && y >= 0 && y < height;
+}
+
+// Si queremos chequear si un string va a entrar en la pantalla hay que decirle el ancho y alto del string
+// en pixeles
+
+/*
+    TODO: Arreglar esto
+    Iba a agregar esta funcion para chequear si un string o un char entran en la pantalla,
+    pero si lo agrego al char, cuando quiero imprimir un string lo tengo que chequear
+    para cada caracter, asi que tendria que modificar mas las cosas para chequearlo
+*/
+static uint8_t isValidScreenPrint(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
+{
+    uint16_t width = getScreenHeight();
+    uint16_t width = getScreenWidth();
+
+    return isValidScreenCoordinate(x, y) && isValidScreenCoordinate(x + width, y + height);
+}
+
 void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
 {
     font_char_p bitmap = getCharBitMap(c);
     if (bitmap == NULL)
         return;
+
+    if (!isValidScreenPrint(x, y, FONT_CHAR_WIDTH_BYTES, FONT_CHAR_HEIGHT_BYTES))
+    {
+        return;
+    }
 
     for (unsigned int i = 0; i < FONT_CHAR_HEIGHT_BYTES; i++)
     {
@@ -138,6 +168,9 @@ void drawString(const char* str, uint32_t hexColor, uint64_t x, uint64_t y)
 
 void drawRectangle(uint64_t width, uint64_t heigth, uint32_t hexColor, uint64_t x, uint64_t y)
 {
+    if (!isValidScreenPrint(x, y, width, heigth))
+        return;
+
 	for (uint64_t i = x; i < x + width; i++)
 	{
 		for (uint64_t j = y; j < y + heigth; j++)
@@ -147,6 +180,8 @@ void drawRectangle(uint64_t width, uint64_t heigth, uint32_t hexColor, uint64_t 
 	}
 }
 
+
+// Para estas funciones, la que chequa si entran en la pantalla es drawString
 void drawDecimal(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y)
 {
     char buffer[21]; // Max 20 digits for uint64_t in decimal + null terminator
