@@ -54,17 +54,10 @@ int main()
 {	
 	load_idt();
 
-	// Tester
-	clearScreen();
-	drawDecimal(getScreenHeight(), 0x00FFFFFF, 0, 0);
-	drawDecimal(getScreenWidth(), 0x00FFFFFF, 0, FONT_CHAR_HEIGHT_BYTES + 1);
-
-
 	while (1)
 	{
 		// Wait for interrupts
 	}
-	
 
 	return 0;
 }
