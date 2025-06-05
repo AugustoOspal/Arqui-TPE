@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <stdint.h>
 #include <string.h>
+#include <fonts.h>
 #include <videoDriver.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
@@ -52,6 +53,12 @@ void * initializeKernelBinary()
 int main()
 {	
 	load_idt();
+
+	// Tester
+	clearScreen();
+	drawDecimal(getScreenHeight(), 0x00FFFFFF, 0, 0);
+	drawDecimal(getScreenWidth(), 0x00FFFFFF, 0, FONT_CHAR_HEIGHT_BYTES + 1);
+
 
 	while (1)
 	{

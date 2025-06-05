@@ -31,4 +31,12 @@ void int_20() {
 
 void int_21(){
 	keyboard_handler();
+
+	// Tester
+	char c = kbd_get_char();
+	if (c)
+	{
+		clearScreen(); // Limpia la pantalla antes de dibujar el carácter
+		drawChar(c, 0xFFFFFF, 0, 0); // Dibuja el carácter en la posición (0, 0) con color blanco
+	}
 }

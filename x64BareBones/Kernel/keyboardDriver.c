@@ -68,7 +68,13 @@ void keyboard_handler() {
         return;
     }
 
+    /*
+        Si el scancode tiene seteado el septimo bit mas significativo
+        significa que la tecla fue liberada, sino que fue apretada
+    */
     int is_press = !(scancode & 0x80);
+
+    // El scancode base sin el bit de apretado/liberacion
     unsigned int make_code = scancode & 0x7F;
 
     // 1. Actualizar estado de teclas modificadoras
@@ -92,7 +98,7 @@ void keyboard_handler() {
             return;
     }
 
-    // 2. Si es un "press" de una tecla no modificadora, procesar para obtener el carácter
+    // 2. Si es un "press" de una tecla no modificadora, procesar para agarrar el carácter
     if (is_press) {
         char final_char = 0;
         char char_normal = 0;
@@ -103,6 +109,7 @@ void keyboard_handler() {
             char_shifted = scancode_to_ascii_map_shifted[make_code];
         }
 
+        // Si es no imprimible o no esta mapeada
         if (char_normal == 0) {
             return;
         }
@@ -110,6 +117,8 @@ void keyboard_handler() {
         int is_alpha_lower = (char_normal >= 'a' && char_normal <= 'z');
         int any_shift_pressed = kbd_modifier_state.lshift || kbd_modifier_state.rshift;
 
+
+        // Esto esta asi en vez de un final_char ? mas simple para el manejo del Caps
         if (any_shift_pressed) {
             final_char = char_shifted;
             if (kbd_modifier_state.caps_lock_on && is_alpha_lower) {
@@ -117,7 +126,7 @@ void keyboard_handler() {
                     final_char = char_normal;
                  }
             }
-        } else { // Shift no presionado
+        } else {
             final_char = char_normal;
             if (kbd_modifier_state.caps_lock_on && is_alpha_lower) {
                 final_char = char_shifted;
@@ -131,8 +140,7 @@ void keyboard_handler() {
                 buffer_write_idx = (buffer_write_idx + 1) % KEYBOARD_BUFFER_SIZE;
                 buffer_count++;
                 
-                // Para debug, puedes imprimir el carácter a la consola si tienes una función para ello
-                // ncPrintChar(final_char); 
+
             }
             // else: Buffer lleno, el carácter se pierde. Se podría manejar de otra forma (ej. beep).
         }

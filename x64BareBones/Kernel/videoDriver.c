@@ -15,7 +15,7 @@ struct vbe_mode_info_structure {
 	uint32_t win_func_ptr;		// deprecated; used to switch banks from protected mode without returning to real mode
 	uint16_t pitch;			// number of bytes per horizontal line
 	uint16_t width;			// width in pixels
-	uint16_t height;			// height in pixels
+	uint16_t height;		// height in pixels
 	uint8_t w_char;			// unused...
 	uint8_t y_char;			// ...
 	uint8_t planes;
@@ -59,6 +59,16 @@ void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
 */
 
 // TODO: Ninguna de estas funciones cheuqea el ancho y largo de la pantalla
+
+uint16_t getScreenWidth()
+{
+    return VBE_mode_info->width;
+}
+
+uint16_t getScreenHeight()
+{
+    return VBE_mode_info->height;
+}
 
 void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
 {

@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+// Info de la pantalla
+uint16_t getScreenWidth();
+uint16_t getScreenHeight();
+
 void putPixel(uint32_t hexColor, uint64_t x, uint64_t y);
 void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y);
 void drawString(const char* str, uint32_t hexColor, uint64_t x, uint64_t y);
