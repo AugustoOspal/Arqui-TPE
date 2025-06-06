@@ -70,7 +70,7 @@ uint16_t getScreenHeight()
     return VBE_mode_info->height;
 }
 
-static uint8_t isValidScreenCoordinate(uint16_t x, uint16_t y)
+uint8_t isValidScreenCoordinate(uint16_t x, uint16_t y)
 {
     uint16_t width = getScreenWidth();
     uint16_t height = getScreenHeight();
@@ -87,9 +87,14 @@ static uint8_t isValidScreenCoordinate(uint16_t x, uint16_t y)
     pero si lo agrego al char, cuando quiero imprimir un string lo tengo que chequear
     para cada caracter, asi que tendria que modificar mas las cosas para chequearlo
 */
-static uint8_t isValidScreenPrint(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
+uint8_t isValidScreenPrint(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 {
     return isValidScreenCoordinate(x, y) && isValidScreenCoordinate(x + width, y + height);
+}
+
+uint16_t getRemainingScreenWidth(uint16_t x_coord)
+{
+    return getScreenWidth() - (x_coord);
 }
 
 void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)

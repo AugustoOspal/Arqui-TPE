@@ -18,4 +18,7 @@ void drawDecimal(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y);
 void drawHexa(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y); // Ya estaba declarada
 void drawBin(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y);
 
+uint8_t isValidScreenCoordinate(uint16_t x, uint16_t y);
+uint8_t isValidScreenPrint(uint16_t x, uint16_t y, uint16_t width, uint16_t height);
+
 #endif // _VIDEODRIVER_H_ // Asegúrate que el guard sea correcto si no es este

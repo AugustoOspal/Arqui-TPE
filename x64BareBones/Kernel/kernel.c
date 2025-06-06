@@ -3,8 +3,8 @@
 #include <string.h>
 #include <fonts.h>
 #include <videoDriver.h>
+#include <keyboardDriver.h>
 #include <moduleLoader.h>
-#include <naiveConsole.h>
 #include <idtLoader.h>
 
 extern uint8_t text;
@@ -53,5 +53,22 @@ void * initializeKernelBinary()
 int main()
 {	
 	load_idt();
+
+	// char c;
+	// uint32_t x_pos = 0;
+
+	// while (1)
+	// {
+	// 	if (c = kbd_get_char())
+	// 	{
+	// 		if (c == 'q') {
+	// 			break; // Exit on 'q'
+	// 		}
+	// 		drawChar(c, 0xFFFFFF, x_pos, 80);
+	// 		x_pos += FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP;
+	// 	}
+	// }
+	
+
 	return ((EntryPoint)sampleCodeModuleAddress)();
 }

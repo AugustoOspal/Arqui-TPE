@@ -18,4 +18,8 @@ extern uint16_t sys_detScreenHeight(void);
 // Teclado
 extern char sys_kbdGetChar(void);
 
+
+// Shell
+extern uint64_t sys_write(uint64_t fd, const char *str, uint64_t count);
+
 #endif

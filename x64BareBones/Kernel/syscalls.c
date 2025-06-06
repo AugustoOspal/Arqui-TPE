@@ -1,10 +1,88 @@
 #include <syscalls.h>
 
+#define STDOUT 1
 
-// No esta terminado, es un ejemplo nada mas
-static void sys_write(uint64_t fd, const char *str, uint64_t count) 
+#define VERDE   0x8bd450
+#define VIOLETA 0x8b4bd4
+#define BLANCO  0xffffff
+#define NEGRO   0x000000
+
+#define TAB_SPACES 4
+
+// Coordinadas del cursor
+static uint16_t x_coord = 0;
+static uint16_t y_coord = 0;
+
+uint8_t isSpecialChar(char c) 
 {
+    return (c == '\n' || c == '\r' || c == '\t' || c == '\b');
+}
 
+uint64_t sys_write(uint64_t fd, const char *str, uint64_t count) 
+{
+    // Solo se soporta escritura en STDOUT
+    if (fd != STDOUT) 
+        return 0; 
+
+    for (uint64_t i = 0; i < count; i++) 
+    {
+        if (isSpecialChar(str[i])) 
+        {
+            switch (str[i]) 
+            {
+            case '\n':
+                y_coord += FONT_CHAR_HEIGHT_BYTES + FONT_CHAR_GAP;
+        
+            case '\r':
+                x_coord = 0;
+                break;
+
+            case '\t':
+                x_coord += (TAB_SPACES * (FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP));
+                if (x_coord >= getScreenWidth()) 
+                {
+                    x_coord = x_coord % getScreenWidth();
+                    y_coord += FONT_CHAR_HEIGHT_BYTES + FONT_CHAR_GAP;
+                }
+                break;
+
+            case '\b':
+
+                if (x_coord > FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP) 
+                {
+                    x_coord -= (FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP);
+                } 
+                else 
+                {
+                    if (y_coord > 0) 
+                    {
+                        y_coord -= (FONT_CHAR_HEIGHT_BYTES + FONT_CHAR_GAP);
+                        x_coord = getScreenWidth() - TAB_SPACES*(FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP) + x_coord;
+                    } 
+                    else 
+                    {
+                        x_coord = 0;
+                    }
+                }
+                drawChar(' ', NEGRO, x_coord, y_coord);
+                break;
+            }
+        } 
+
+        // TODO: Aca se podria optimizar con getRemainingScreenWidth
+        else if (isValidScreenPrint(x_coord, y_coord, FONT_CHAR_WIDTH_BYTES, FONT_CHAR_HEIGHT_BYTES)) 
+        {
+            drawChar(str[i], BLANCO, x_coord, y_coord);
+            x_coord += FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP;
+        } 
+        else 
+        {
+            x_coord = 0;
+            y_coord += FONT_CHAR_HEIGHT_BYTES + FONT_CHAR_GAP;
+        }
+    }
+
+    return count;
 }
 
 void syscallDispatcher(Registers_t *regs) 
@@ -27,7 +105,7 @@ void syscallDispatcher(Registers_t *regs)
 
     switch (syscall_id) 
     {
-        case 1: 
+        case 0x1: 
             sys_write(arg1, (const char *)arg2, arg3);
             regs->rax = arg1; // Bytes escritos
             break;

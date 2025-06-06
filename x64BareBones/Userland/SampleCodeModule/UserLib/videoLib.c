@@ -1,4 +1,4 @@
-#include <lib.h>
+#include <videoLib.h>
 
 void clearScreen(void)
 {
@@ -40,8 +40,4 @@ uint16_t getScreenWidth() {
 
 uint16_t getScreenHeight() {
     return sys_getScreenHeight();
-}
-
-char getChar() {
-    return sys_kbdGetChar();
 }

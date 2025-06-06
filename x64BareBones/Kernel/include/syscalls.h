@@ -1,6 +1,7 @@
 #ifndef SYSCALLS_H_
 #define SYSCALLS_H_
 
+#include <fonts.h>
 #include <stdint.h>
 #include <videoDriver.h>
 #include <keyboardDriver.h>
