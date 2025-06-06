@@ -53,11 +53,5 @@ void * initializeKernelBinary()
 int main()
 {	
 	load_idt();
-
-	while (1)
-	{
-		// Wait for interrupts
-	}
-
-	return 0;
+	return ((EntryPoint)sampleCodeModuleAddress)();
 }

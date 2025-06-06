@@ -19,7 +19,7 @@ void syscallDispatcher(Registers_t *regs)
     // El número de la syscall generalmente se pasa en RAX
     uint64_t syscall_id = regs->rax;
 
-    // Los argumentos suelen pasarse en RDI, RSI, RDX, R10, R8, R9 (según la convención de llamada de System V AMD64)
+    // Los argumentos suelen pasarse en RDI, RSI, RDX, RCX, R8, R9 (según la convención de llamada de System V AMD64)
     uint64_t arg1 = regs->rdi;
     uint64_t arg2 = regs->rsi;
     uint64_t arg3 = regs->rdx;
@@ -31,6 +31,16 @@ void syscallDispatcher(Registers_t *regs)
         case 1: 
             sys_write(arg1, (const char *)arg2, arg3);
             regs->rax = arg1; // Bytes escritos
+            break;
+
+        case 10:
+            clearScreen();
+            regs->rax = 0;
+            break;
+
+        case 12:
+            drawString((const char *)arg1, (uint32_t)arg2, arg3, arg4);
+            regs->rax = 0;
             break;
 
         default:

@@ -1,18 +1,19 @@
 include Makefile.inc
 
-SAMPLE_DATA=0001-sampleDataModule.bin
+.PHONY: all clean SampleCodeModule sampleDataModule
 
-all: sampleCodeModule sampleDataModule
+all: SampleCodeModule sampleDataModule
 
-sampleCodeModule:
-	cd SampleCodeModule; make
+# primero compilamos la librería que ahora está dentro de SampleCodeModule
+SampleCodeModule:
+	$(MAKE) -C SampleCodeModule/UserLib
+	$(MAKE) -C SampleCodeModule
 
 sampleDataModule:
-	printf "This is sample data." >> $(SAMPLE_DATA) && dd if=/dev/zero bs=1 count=1 >> $(SAMPLE_DATA)
+	printf "This is sample data." > 0001-sampleDataModule.bin
+	dd if=/dev/zero bs=1 count=1 >> 0001-sampleDataModule.bin
 
 clean:
-	cd SampleCodeModule; make clean
-	rm -rf *.bin
-
-
-.PHONY: sampleCodeModule all clean
+	$(MAKE) -C SampleCodeModule/UserLib clean
+	$(MAKE) -C SampleCodeModule clean
+	rm -f 0001-sampleDataModule.bin
