@@ -2,7 +2,8 @@
 #define SYSCALLS_H_
 
 #include <stdint.h>
-#include <naiveConsole.h>
+#include <videoDriver.h>
+#include <keyboardDriver.h>
 
 // Estructura para acceder a los registros guardados por pushState
 // El orden DEBE coincidir con el de la macro pushState en interrupts.asm

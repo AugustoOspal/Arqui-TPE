@@ -1,4 +1,15 @@
-GLOBAL sys_DrawString
+GLOBAL sys_clearScreen
+GLOBAL sys_putPixel
+GLOBAL sys_drawChar
+GLOBAL sys_drawString
+GLOBAL sys_drawRectangle
+GLOBAL sys_drawDecimal
+GLOBAL sys_drawHexa
+GLOBAL sys_drawBin
+GLOBAL sys_getScreenWidth
+GLOBAL sys_getScreenHeight
+
+GLOBAL sys_kbdGetChar
 
 section .text
 
@@ -8,4 +19,17 @@ section .text
     ret
 %endmacro
 
-sys_DrawString: syscall 12
+; Video
+sys_clearScreen:        syscall 0x10
+sys_putPixel:           syscall 0x11
+sys_drawChar:           syscall 0x12
+sys_drawString:         syscall 0x13
+sys_drawRectangle:      syscall 0x14
+sys_drawDecimal:        syscall 0x15
+sys_drawHexa:           syscall 0x16
+sys_drawBin:            syscall 0x17
+sys_getScreenWidth:     syscall 0x18
+sys_getScreenHeight:    syscall 0x19
+
+; Teclado
+sys_kbdGetChar:         syscall 0x20
