@@ -15,7 +15,13 @@ extern void sys_drawBin(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t 
 extern uint16_t sys_detScreenWidth(void);
 extern uint16_t sys_detScreenHeight(void);
 
+
 // Teclado
 extern char sys_kbdGetChar(void);
+
+
+extern void sys_getTime(void);
+
+extern void sys_get_regist(void);
 
 #endif

@@ -45,3 +45,7 @@ uint16_t getScreenHeight() {
 char getChar() {
     return sys_kbdGetChar();
 }
+
+void getDateTime(dateTime dt) {
+    sys_getDateTime();
+}

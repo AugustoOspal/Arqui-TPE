@@ -11,6 +11,8 @@ GLOBAL sys_getScreenHeight
 
 GLOBAL sys_kbdGetChar
 
+GLOBAL get_registers
+
 section .text
 
 %macro syscall 1
@@ -33,3 +35,8 @@ sys_getScreenHeight:    syscall 0x19
 
 ; Teclado
 sys_kbdGetChar:         syscall 0x20
+
+sys_get_regist:         syscall 0x04
+
+sys_get_time:           syscall 0x05  
+	

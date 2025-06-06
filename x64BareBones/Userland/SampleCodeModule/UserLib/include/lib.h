@@ -14,6 +14,17 @@ void drawBin(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y);
 uint16_t getScreenWidth();
 uint16_t getScreenHeight();
 
+typedef struct{
+    uint8_t sec;
+    uint8_t min;
+    uint8_t hour;
+    uint8_t day;
+    uint8_t month;
+    uint8_t year;
+}dateTime;
+
+void getDateTime();
+
 char getChar(void);
 
 #endif

@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <videoDriver.h>
 #include <keyboardDriver.h>
+#include <time.h>
 
 // Estructura para acceder a los registros guardados por pushState
 // El orden DEBE coincidir con el de la macro pushState en interrupts.asm
@@ -24,6 +25,8 @@ typedef struct {
     uint64_t rbx;
     uint64_t rax; // rax es el último en ser pusheado por pushState
 } Registers_t;
+
+
 
 void syscallDispatcher(Registers_t *regs);
 
