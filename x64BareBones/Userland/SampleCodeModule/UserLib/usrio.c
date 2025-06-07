@@ -39,8 +39,11 @@ static void printUnsigned(unsigned int u) {
 
 static void printInt(int d) {
     if (d < 0)
-        putchar('-'); d = -d;
-
+    {
+        putchar('-'); 
+        d = -d;
+    }
+        
     printUnsigned((unsigned)d);
 }
 

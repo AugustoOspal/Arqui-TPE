@@ -170,8 +170,7 @@ void drawString(const char* str, uint32_t hexColor, uint64_t x, uint64_t y)
 
 void drawRectangle(uint64_t width, uint64_t heigth, uint32_t hexColor, uint64_t x, uint64_t y)
 {
-    if (!isValidScreenPrint(x, y, width, heigth))
-        return;
+    if (!isValidScreenPrint(x, y, width, heigth)) return;
 
 	for (uint64_t i = x; i < x + width; i++)
 	{

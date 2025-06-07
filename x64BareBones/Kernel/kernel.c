@@ -38,7 +38,6 @@ void * getStackBase()
 
 void * initializeKernelBinary()
 {
-	ncNewline();
 	void * moduleAddresses[] = {
 		sampleCodeModuleAddress,
 		sampleDataModuleAddress
