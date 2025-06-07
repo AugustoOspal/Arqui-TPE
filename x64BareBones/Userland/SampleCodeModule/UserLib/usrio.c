@@ -82,6 +82,7 @@ int printf(const char *fmt, ...)
     return 0;
 }
 
+// TODO: Revisar esto devuelta para ver si se puede mejorar
 int scanf(const char *fmt, ...)
 {
     va_list ap;
