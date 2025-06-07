@@ -11,10 +11,11 @@ GLOBAL sys_getScreenHeight
 
 GLOBAL sys_kbdGetChar
 
-GLOBAL get_registers
-
 GLOBAL sys_write
 GLOBAL sys_read
+
+GLOBAL sys_getRegisters
+GLOBAL sys_getTime
 
 section .text
 
@@ -26,6 +27,9 @@ section .text
 
 sys_write:              syscall 0x1
 sys_read:               syscall 0x2
+
+sys_getRegisters:       syscall 0x04
+sys_getTime:            syscall 0x05  
 
 ; Video
 sys_clearScreen:        syscall 0x10
@@ -41,8 +45,4 @@ sys_getScreenHeight:    syscall 0x19
 
 ; Teclado
 sys_kbdGetChar:         syscall 0x20
-
-sys_get_regist:         syscall 0x04
-
-sys_get_time:           syscall 0x05  
 	

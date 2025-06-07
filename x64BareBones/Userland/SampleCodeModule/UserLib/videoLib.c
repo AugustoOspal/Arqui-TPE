@@ -41,7 +41,3 @@ uint16_t getScreenWidth() {
 uint16_t getScreenHeight() {
     return sys_getScreenHeight();
 }
-
-void getDateTime(dateTime dt) {
-    sys_getDateTime();
-}

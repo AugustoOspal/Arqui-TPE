@@ -1,4 +1,3 @@
-#include <time.h>
 #include <syscalls.h>
 
 #define STDIN  0
@@ -112,25 +111,15 @@ uint64_t sys_read(uint8_t fd, char *buffer, uint64_t count)
     return 0;
 }
 
-// esto no va aca //
-typedef struct{
-    uint8_t sec;
-    uint8_t min;
-    uint8_t hour;
-    uint8_t day;
-    uint8_t month;
-    uint8_t year;
-}dateTime;
-
-void getTime(dateTime *dt) 
-{
-    dt->sec = getSysSeconds();
-    dt->min = getSysMinutes();
-    dt->hour = getSysHours();
-    dt->day = getSysDayOfWeek();
-    dt->month = getSysMonth();
-    dt->year = getSysYear();
-}
+// void getTime(dateTime *dt) 
+// {
+//     dt->sec = getSysSeconds();
+//     dt->min = getSysMinutes();
+//     dt->hour = getSysHours();
+//     dt->day = getSysDayOfWeek();
+//     dt->month = getSysMonth();
+//     dt->year = getSysYear();
+// }
 
 void syscallDispatcher(Registers_t *regs) 
 {
@@ -161,17 +150,17 @@ void syscallDispatcher(Registers_t *regs)
             regs->rax = sys_read(arg1, (char *)arg2, arg3);
             break;
 
-        case 0x04:
-            uint64_t *regsValues = (uint64_t *)arg1;
-            for(int i = 0; i < 17; i++) {
-                regsValues[i] = registers[i];
-            }
-            break;
+        // case 0x04:
+        //     uint64_t *regsValues = (uint64_t *)arg1;
+        //     for(int i = 0; i < 17; i++) {
+        //         regsValues[i] = registers[i];
+        //     }
+        //     break;
 
-        case 0x05:
-            dateTime *dt = (dateTime *)arg1;
-            getTime(dt);
-            break;
+        // case 0x05:
+        //     dateTime *dt = (dateTime *)arg1;
+        //     getTime(dt);
+        //     break;
 
         case 0x10:
             clearScreen();

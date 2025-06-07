@@ -2,6 +2,7 @@
 #define _SYSCALL_LIB_H
 
 #include <stdint.h>
+#include <time.h>
 
 // Video
 extern void sys_clearScreen(void);
@@ -23,7 +24,7 @@ extern char sys_kbdGetChar(void);
 extern uint64_t sys_write(uint8_t fd, const char *str, uint64_t count);
 extern uint64_t sys_read(uint8_t fd, char *buffer, uint64_t count);
 
-extern void sys_getTime(void);
-extern void sys_get_regist(void);
+// extern void sys_getTime(dateTime *dt);
+// extern void sys_get_regist(void);
 
 #endif

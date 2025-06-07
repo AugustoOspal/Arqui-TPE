@@ -8,8 +8,6 @@ void * memcpy(void * destination, const void * source, uint64_t length);
 
 char *cpuVendor(char *result);
 
-
-
 unsigned int strlenght(const char* str);
 
 #endif
