@@ -12,6 +12,7 @@ GLOBAL sys_getScreenHeight
 GLOBAL sys_kbdGetChar
 
 GLOBAL sys_write
+GLOBAL sys_read
 
 section .text
 
@@ -21,7 +22,8 @@ section .text
     ret
 %endmacro
 
-sys_write:               syscall 0x1
+sys_write:              syscall 0x1
+sys_read:               syscall 0x2
 
 ; Video
 sys_clearScreen:        syscall 0x10

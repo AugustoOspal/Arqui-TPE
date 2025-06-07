@@ -19,6 +19,4 @@ uint16_t getCharWidth();
 uint16_t getCharHeight();
 uint16_t getCharGap();
 
-char getChar(void);
-
 #endif

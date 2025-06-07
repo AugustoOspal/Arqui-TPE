@@ -15,11 +15,12 @@ extern void sys_drawBin(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t 
 extern uint16_t sys_detScreenWidth(void);
 extern uint16_t sys_detScreenHeight(void);
 
-// Teclado
+// Teclado. Esta a lo mejor la tendriamos que sacar porque tenemos sys_read ya
 extern char sys_kbdGetChar(void);
 
 
 // Shell
-extern uint64_t sys_write(uint64_t fd, const char *str, uint64_t count);
+extern uint64_t sys_write(uint8_t fd, const char *str, uint64_t count);
+extern uint64_t sys_read(uint8_t fd, char *buffer, uint64_t count);
 
 #endif

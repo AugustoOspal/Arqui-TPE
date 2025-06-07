@@ -1,5 +1,6 @@
 #include <syscalls.h>
 
+#define STDIN  0
 #define STDOUT 1
 
 #define VERDE   0x8bd450
@@ -18,7 +19,7 @@ uint8_t isSpecialChar(char c)
     return (c == '\n' || c == '\r' || c == '\t' || c == '\b');
 }
 
-uint64_t sys_write(uint64_t fd, const char *str, uint64_t count) 
+uint64_t sys_write(uint8_t fd, const char *str, uint64_t count) 
 {
     // Solo se soporta escritura en STDOUT
     if (fd != STDOUT) 
@@ -64,6 +65,9 @@ uint64_t sys_write(uint64_t fd, const char *str, uint64_t count)
                         x_coord = 0;
                     }
                 }
+
+                // TODO: Esto en vez del un espacio tendria que ser un caracter con todo
+                // el bit map en 1. Tambien sirve para el cursor
                 drawChar(' ', NEGRO, x_coord, y_coord);
                 break;
             }
@@ -83,6 +87,26 @@ uint64_t sys_write(uint64_t fd, const char *str, uint64_t count)
     }
 
     return count;
+}
+
+uint64_t sys_read(uint8_t fd, char *buffer, uint64_t count)
+{
+    if(fd == STDIN)
+    {
+        char c;
+
+        for (uint64_t i = 0; i < count; i++)
+        {
+            if (!(c = kbd_get_char()))
+                return i;
+
+            buffer[i] = c;
+        }
+        
+        return count;
+    }
+
+    return 0;
 }
 
 void syscallDispatcher(Registers_t *regs) 
@@ -107,7 +131,11 @@ void syscallDispatcher(Registers_t *regs)
     {
         case 0x1: 
             sys_write(arg1, (const char *)arg2, arg3);
-            regs->rax = arg1; // Bytes escritos
+            regs->rax = arg1;
+            break;
+
+        case 0x2:
+            regs->rax = sys_read(arg1, (char *)arg2, arg3);
             break;
 
         case 0x10:
