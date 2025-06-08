@@ -3,7 +3,7 @@
 // Codigo de https://wiki.osdev.org/PC_Speaker
 
 //Play sound using built-in speaker
-static void play_sound(uint32_t nFrequence) {
+void play_sound(uint32_t nFrequence) {
     uint32_t Div;
     uint8_t tmp;
 
@@ -21,7 +21,7 @@ static void play_sound(uint32_t nFrequence) {
 }
  
 //make it shut up
-static void nosound() {
+void nosound() {
     uint8_t tmp = inb(0x61) & 0xFC;
         
     outb(0x61, tmp);
@@ -35,14 +35,7 @@ void beep() {
     //set_PIT_2(old_frequency);
 }
 
-// Corto y agudo
-void game_blip_sound() {
-    play_sound(2500);
-    timer_wait(3);
-    nosound();
-}
-
-// Corto y grave
+// TODO: Este despues pasarlo a userland
 void game_thud_sound() {
     play_sound(500);
     timer_wait(4);
