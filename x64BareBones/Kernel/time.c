@@ -15,10 +15,10 @@ int seconds_elapsed() {
 }
 
 // void getDateTime(dateTime *dt) {
-// 	dt->sec = getSysSeconds();
-// 	dt->min = getSysMinutes();
-// 	dt->hour = getSysHours();
-// 	dt->day = getSysDayOfMonth();
-// 	dt->month = getSysMonth();
-// 	dt->year = getSysYear();
+// 		dt->sec = getSysSeconds();
+// 		dt->min = getSysMinutes();
+// 		dt->hour = getSysHours();
+// 		dt->day = getSysDayOfMonth();
+// 		dt->month = getSysMonth();
+// 		dt->year = getSysYear();
 // }

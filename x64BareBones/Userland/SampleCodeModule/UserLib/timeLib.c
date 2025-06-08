@@ -1,6 +1,5 @@
 #include <time.h>
 
-// void getTime(dateTime *dt) 
-// {
-    
+// dateTime* getTime() {
+//      return sys_getTime(); 
 // }

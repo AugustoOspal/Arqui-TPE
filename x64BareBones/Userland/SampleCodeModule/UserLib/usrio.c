@@ -115,3 +115,11 @@ int scanf(const char *fmt, ...)
     va_end(ap);
     return cnt;
 }
+
+void to_lower(char * str){
+    for (int i=0; str[i] != 0; i++){
+        if ('A' <= str[i] && str[i] <= 'Z'){
+            str[i] += ('a'-'A');
+        }
+    }
+}

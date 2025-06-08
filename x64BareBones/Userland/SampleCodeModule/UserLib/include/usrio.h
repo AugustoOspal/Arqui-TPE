@@ -9,5 +9,6 @@ int printf(const char *format, ...);
 int putchar(char c);
 char getchar(void);
 int puts(const char *s);
+void to_lower(char * str)
 
 #endif

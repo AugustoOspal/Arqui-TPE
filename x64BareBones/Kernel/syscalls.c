@@ -151,15 +151,17 @@ void syscallDispatcher(Registers_t *regs)
             break;
 
         // case 0x04:
-        //     uint64_t *regsValues = (uint64_t *)arg1;
+        //     uint64_t regsValues[17];
         //     for(int i = 0; i < 17; i++) {
         //         regsValues[i] = registers[i];
         //     }
+        //     regs->rax = regsValues;
         //     break;
 
         // case 0x05:
-        //     dateTime *dt = (dateTime *)arg1;
+        //     dateTime *dt;
         //     getTime(dt);
+        //     regs->rax = dt;
         //     break;
 
         case 0x10:

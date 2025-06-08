@@ -12,6 +12,6 @@ typedef struct {
     uint8_t year;
 }dateTime;
 
-void getDateTime(dateTime *dt);
+dateTime* getDateTime();
 
 #endif
