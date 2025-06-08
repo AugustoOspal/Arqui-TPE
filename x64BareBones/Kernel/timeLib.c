@@ -1,4 +1,4 @@
-#include <time.h>
+#include <timeLib.h>
 
 static unsigned long ticks = 0;
 
@@ -12,6 +12,11 @@ int ticks_elapsed() {
 
 int seconds_elapsed() {
 	return ticks / 18;
+}
+
+void timer_wait(uint64_t ticks) {
+	unsigned long end = ticks_elapsed() + ticks;
+	while (ticks_elapsed() < end);
 }
 
 // void getDateTime(dateTime *dt) {

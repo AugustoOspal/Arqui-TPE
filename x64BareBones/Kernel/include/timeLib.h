@@ -15,6 +15,7 @@
 void timer_handler();
 int ticks_elapsed();
 int seconds_elapsed();
+void timer_wait(uint64_t ticks);
 
 // void getDateTime(dateTime *dt);
 

@@ -31,9 +31,7 @@ void startShell(){
         show_prompt();
         readInput(input_buffer);
         to_lower(input_buffer);
-        printf(input_buffer);
         command_id command = processInput(input_buffer);
-        printf(command);
         if(command != -1) {
              commands[command]();
          }else {

@@ -6,6 +6,8 @@
 #include <keyboardDriver.h>
 #include <moduleLoader.h>
 #include <idtLoader.h>
+#include <timeLib.h>
+#include <soundDriver.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -53,20 +55,11 @@ int main()
 {	
 	load_idt();
 
-	// char c;
-	// uint32_t x_pos = 0;
-
-	// while (1)
-	// {
-	// 	if (c = kbd_get_char())
-	// 	{
-	// 		if (c == 'q') {
-	// 			break; // Exit on 'q'
-	// 		}
-	// 		drawChar(c, 0xFFFFFF, x_pos, 80);
-	// 		x_pos += FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP;
-	// 	}
-	// }
+	while (1)
+	{
+		game_thud_sound();
+		timer_wait(18 * 2); // Wait for 2 seconds
+	}
 	
 
 	return ((EntryPoint)sampleCodeModuleAddress)();

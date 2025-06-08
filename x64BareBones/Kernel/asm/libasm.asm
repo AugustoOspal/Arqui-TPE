@@ -9,6 +9,10 @@ GLOBAL getSysYear
 
 GLOBAL getKeyCode
 
+; Lo usamos para sonido nosotros
+GLOBAL outb
+GLOBAL inb
+
 section .text
 	
 cpuVendor:
@@ -200,3 +204,15 @@ getKeyCode:
 	mov rsp, rbp
 	pop rbp
 	ret
+
+outb:
+    mov dx, di
+    mov al, sil 
+    out dx, al
+    ret
+
+inb:
+    mov dx, di 
+    in al, dx
+    movzx rax, al
+    ret

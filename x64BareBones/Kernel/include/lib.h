@@ -1,5 +1,5 @@
-#ifndef LIB_H
-#define LIB_H
+#ifndef _LIB_H
+#define _LIB_H
 
 #include <stdint.h>
 
