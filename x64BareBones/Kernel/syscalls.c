@@ -70,7 +70,7 @@ uint64_t sys_write(uint8_t fd, const char *str, uint64_t count)
 
                 // TODO: Esto en vez del un espacio tendria que ser un caracter con todo
                 // el bit map en 1. Tambien sirve para el cursor
-                drawChar(' ', NEGRO, x_coord, y_coord);
+                drawRectangle(FONT_CHAR_WIDTH_BYTES, FONT_CHAR_HEIGHT_BYTES, NEGRO, x_coord, y_coord);
                 break;
             }
         } 
