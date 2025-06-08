@@ -1,7 +1,7 @@
 #ifndef _SHELL_H_
 #define _SHELL_H_
 
-typedef enum {HELP = 0, DATE, EXIT, REGISTERS} command_id;
+typedef enum {HELP = 0, EXIT, REGISTERS} command_id;
 
 void startShell();
 void readInput();

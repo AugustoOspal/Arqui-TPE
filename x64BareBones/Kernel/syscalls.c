@@ -15,6 +15,8 @@ static uint16_t x_coord = 0;
 static uint16_t y_coord = 0;
 
 extern uint64_t registers[];
+extern void load_registers();
+
 
 uint8_t isSpecialChar(char c) 
 {
@@ -150,13 +152,14 @@ void syscallDispatcher(Registers_t *regs)
             regs->rax = sys_read(arg1, (char *)arg2, arg3);
             break;
 
-        // case 0x04:
-        //     uint64_t regsValues[17];
-        //     for(int i = 0; i < 17; i++) {
-        //         regsValues[i] = registers[i];
-        //     }
-        //     regs->rax = regsValues;
-        //     break;
+        case 0x04:
+            uint64_t *regsValues = (uint64_t *)arg1;
+            for(int i = 0; i < 17; i++) {
+                load_registers();
+                regsValues[i] = registers[i];
+            }
+            regs->rax = 0;
+            break;
 
         // case 0x05:
         //     dateTime *dt;

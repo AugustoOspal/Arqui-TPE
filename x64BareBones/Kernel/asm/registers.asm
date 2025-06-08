@@ -1,4 +1,4 @@
-GLOBAL register
+GLOBAL registers
 GLOBAL load_registers
 
 
@@ -44,9 +44,9 @@ load_registers:
     pushState
 
     mov rax, [rsp + 16*8]       ; Captura RIP de la pila antes de modificar rsp
-    mov [register_array + 128], rax  ; Guarda RIP en la posición correcta en el array
+    mov [registers + 128], rax  ; Guarda RIP en la posición correcta en el array
 
-    mov rax, register_array
+    mov rax, registers
 
     push rbx
     mov rbx, [rbp - 8]
@@ -95,4 +95,4 @@ load_registers:
 
 
 section .bss
-    register_array resq 17
+    registers resq 17

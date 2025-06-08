@@ -5,15 +5,15 @@
 #include <stringLib.h>
 
 #define BUFFER 500
-#define COMMAND_SIZE 2
+#define COMMAND_SIZE 3
 #define SPECIAL_KEY_MAX_VALUE 5
 
 // char* commands_str[] = {"help", "date", "exit", "registers"};
-char* commands_str[] = {"help", "exit"};
+char* commands_str[] = {"help", "exit", "registers"};
 
 typedef void (*ShellCommand)();
 // static ShellCommand commands[] = {help, printDateTime, exitShell, getRegisters};
-static ShellCommand commands[] = {help, exitShell};
+static ShellCommand commands[] = {help, exitShell, getRegisters};
 
 char *registers[] = {" RAX: ", " RBX: ", " RCX: ", " RDX: ", " RSI: ", " RDI: ", " RBP: ", " RSP: ", " R8: ", " R9: ", " R10: ", " R11: ", " R12: ", " R13: ", " R14: ", " R15: ", " RIP: "};
 
@@ -21,7 +21,7 @@ void show_prompt() {
     printf("user@itba:> ");
 }
 
-extern uint64_t *get_regist();
+//extern void sys_getRegisters(uint64_t registers);
 
 static uint8_t active = 1;
 
@@ -67,9 +67,12 @@ void readInput(char *buffer){
 
 command_id processInput(char* input){
     int index = -1;
+    printf(input);
     for(int i = 0; i < COMMAND_SIZE && (index == -1); i++) {
-        if(strcmp(input, commands_str[i]) == 0)
+        if(strcmp(input, commands_str[i]) == 0){
+            printf("entre");
             index = i;
+        }
     }
     return index;
 }
@@ -91,13 +94,13 @@ void help(){
 
 
 void notACommand(char* input){
-    printf("Command %s not found. Type 'help' for a list of commands.", input);
+    printf("Command %s not found. Type 'help' for a list of commands.\n", input);
 }
 
 void getRegisters(){
     printf(" CURRENT REGISTERS VALUES: \n");
-    uint64_t *regsValues;
-    // regsValues = get_regist();
+    uint64_t regsValues[17];
+    get_regist(regsValues);
     for (int i = 0; i < 17; i++){
             printf("\n%s %x",registers[i], regsValues[i]);
     }   

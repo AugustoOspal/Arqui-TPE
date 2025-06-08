@@ -26,6 +26,6 @@ extern uint64_t sys_write(uint8_t fd, const char *str, uint64_t count);
 extern uint64_t sys_read(uint8_t fd, char *buffer, uint64_t count);
 
 // extern void sys_getDateTime(dateTime *dt);
-// extern void sys_getRegisters(void);
+extern void sys_getRegisters(uint64_t *registers);
 
 #endif
