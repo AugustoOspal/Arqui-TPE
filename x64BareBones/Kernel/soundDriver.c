@@ -52,12 +52,10 @@ void game_thud_sound() {
 void play_boot_sound() {
     play_sound(300);
     timer_wait(15);
-    nosound();
     timer_wait(2);
 
     play_sound(600);
     timer_wait(10);
-    nosound();
     timer_wait(2);
 
     play_sound(900);
