@@ -2,7 +2,7 @@
 #define _SYSCALL_LIB_H
 
 #include <stdint.h>
-#include <time.h>
+#include <timeLib.h>
 
 // Video
 extern void sys_clearScreen(void);
