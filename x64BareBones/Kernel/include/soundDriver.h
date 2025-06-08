@@ -9,5 +9,6 @@ extern uint8_t inb(uint16_t port);
 void beep();
 void game_blip_sound();
 void game_thud_sound();
+void play_boot_sound();
 
 #endif

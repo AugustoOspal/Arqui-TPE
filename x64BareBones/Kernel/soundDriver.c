@@ -37,14 +37,30 @@ void beep() {
 
 // Corto y agudo
 void game_blip_sound() {
-    play_sound(2500); // Frecuencia más aguda
-    timer_wait(3);    // Duración más corta
+    play_sound(2500);
+    timer_wait(3);
     nosound();
 }
 
 // Corto y grave
 void game_thud_sound() {
-    play_sound(500);  // Frecuencia más grave
-    timer_wait(4);    // Duración corta
+    play_sound(500);
+    timer_wait(4);
+    nosound();
+}
+
+void play_boot_sound() {
+    play_sound(300);
+    timer_wait(15);
+    nosound();
+    timer_wait(2);
+
+    play_sound(600);
+    timer_wait(10);
+    nosound();
+    timer_wait(2);
+
+    play_sound(900);
+    timer_wait(20);
     nosound();
 }

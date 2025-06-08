@@ -54,13 +54,6 @@ void * initializeKernelBinary()
 int main()
 {	
 	load_idt();
-
-	while (1)
-	{
-		game_thud_sound();
-		timer_wait(18 * 2); // Wait for 2 seconds
-	}
-	
-
+	play_boot_sound();
 	return ((EntryPoint)sampleCodeModuleAddress)();
 }
