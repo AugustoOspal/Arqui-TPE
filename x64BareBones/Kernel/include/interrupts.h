@@ -9,6 +9,7 @@
 #define INTERRUPS_H_
 
 #include <idtLoader.h>
+#include <stdint.h>
 
 // Interrupciones por hardware
 void _irq00Handler(void);

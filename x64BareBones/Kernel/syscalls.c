@@ -138,7 +138,6 @@ void syscallDispatcher(Registers_t *regs)
 
     /*
         Las que son 0x1... son syscalls de video
-        Las que son 0x2... son syscalls de teclado
     */
 
     switch (syscall_id) 
@@ -217,6 +216,16 @@ void syscallDispatcher(Registers_t *regs)
 
         case 0x20:
             regs->rax = kbd_get_char();
+            break;
+
+        case 0x30:
+            playSoundForDuration((uint32_t)arg1, (uint32_t)arg2);
+            regs->rax = 0;
+            break;
+
+        case 0x40:
+            sleep(arg1);
+            regs->rax = 0;
             break;
 
         default:

@@ -27,10 +27,16 @@ void nosound() {
     outb(0x61, tmp);
 }
  
+void playSoundForDuration(uint32_t nFrequence, uint32_t duration) {
+    play_sound(nFrequence);
+    sleep(duration);
+    nosound();
+}
+
 //Make a beep
 void beep() {
     play_sound(1000);
-    timer_wait(10);
+    sleep(10);
     nosound();
     //set_PIT_2(old_frequency);
 }
@@ -38,20 +44,18 @@ void beep() {
 // TODO: Este despues pasarlo a userland
 void game_thud_sound() {
     play_sound(500);
-    timer_wait(4);
+    sleep(4);
     nosound();
 }
 
 void play_boot_sound() {
-    play_sound(300);
-    timer_wait(15);
-    timer_wait(2);
-
-    play_sound(600);
-    timer_wait(10);
-    timer_wait(2);
-
-    play_sound(900);
-    timer_wait(20);
-    nosound();
+    playSoundForDuration(100, 100);
+	sleep(100);
+	playSoundForDuration(200, 100);
+	sleep(100);
+	playSoundForDuration(300, 100);
+	sleep(100);
+	playSoundForDuration(400, 100);
+	sleep(100);
+	playSoundForDuration(500, 100);
 }

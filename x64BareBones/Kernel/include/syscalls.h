@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <videoDriver.h>
 #include <keyboardDriver.h>
+#include <soundDriver.h>
 #include <timeLib.h>
 
 // Estructura para acceder a los registros guardados por pushState

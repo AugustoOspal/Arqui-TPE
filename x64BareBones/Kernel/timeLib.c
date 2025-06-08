@@ -1,4 +1,5 @@
 #include <timeLib.h>
+#include <interrupts.h>
 
 static unsigned long ticks = 0;
 
@@ -14,9 +15,25 @@ int seconds_elapsed() {
 	return ticks / 18;
 }
 
-void timer_wait(uint64_t ticks) {
-	unsigned long end = ticks_elapsed() + ticks;
-	while (ticks_elapsed() < end);
+uint64_t ms_elapsed() {
+	return (ticks * 1000) / 18;
+}
+
+/*
+	TODO: Antes lo habia puesto contando los tick y no funcionaba
+	bien en el userland, pero si en el kernel. Parece que es
+	porque no le cedia control
+*/
+void sleep(uint64_t milliseconds) {
+	uint64_t target_ticks = (milliseconds * 18) / 1000;
+	uint64_t start_ticks = ticks;
+
+
+	// Habilito los interrupts
+	_sti();
+	while ((ticks - start_ticks) < target_ticks);
+	// Deshabilito los interrupts
+	_cli();
 }
 
 // void getDateTime(dateTime *dt) {

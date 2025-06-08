@@ -2,6 +2,7 @@
 #define _TIME_H_
 
 #include <stdint.h>
+#include <interrupts.h>
 
 // typedef struct{
 //     uint8_t sec;
@@ -15,7 +16,8 @@
 void timer_handler();
 int ticks_elapsed();
 int seconds_elapsed();
-void timer_wait(uint64_t ticks);
+uint64_t ms_elapsed();
+void sleep(uint64_t milliseconds);
 
 // void getDateTime(dateTime *dt);
 

@@ -17,6 +17,9 @@ GLOBAL sys_read
 GLOBAL sys_getRegisters
 GLOBAL sys_getTime
 
+GLOBAL sys_playSound
+GLOBAL sys_sleepMilli
+
 section .text
 
 %macro syscall 1
@@ -45,4 +48,9 @@ sys_getScreenHeight:    syscall 0x19
 
 ; Teclado
 sys_kbdGetChar:         syscall 0x20
-	
+
+; Sonido
+sys_playSound:          syscall 0x30
+
+; Tiempo
+sys_sleepMilli:          syscall 0x40

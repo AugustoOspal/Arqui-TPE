@@ -2,6 +2,7 @@
 #define USERLIB_TIME_H
 
 #include <stdint.h>
+#include <syscallLib.h>
 
 typedef struct {
     uint8_t sec;
@@ -13,5 +14,6 @@ typedef struct {
 }dateTime;
 
 dateTime* getDateTime();
+extern void sleepMilli(uint64_t milliseconds);
 
 #endif

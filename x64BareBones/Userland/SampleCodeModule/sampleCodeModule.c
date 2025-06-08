@@ -1,7 +1,9 @@
 /* sampleCodeModule.c */
 
 #include <videoLib.h>
+#include <soundLib.h>
 #include <usrio.h>
+#include <timeLib.h>
 #include <shell.h>
 
 char * v = (char*)0xB8000 + 79 * 2;
@@ -15,22 +17,6 @@ int main() {
 	*v = 'X';
 	*(v+1) = 0x74;
 
-	// puts("Hello, world!");
-	// puts("This is a sample code module running in userland.");
-	// printf("This is a test of printf: %d, %x, %s\n", 12345, 0xDEADBEEF, "Hello again!");
-
-	// printf("%s", "Testing printf with a string.\n");
-	// char str[100];
-	// printf("Enter a string: ");
-	// scanf("%s", &str);
-	// printf("You entered: %s\n", str);
-
-	// char c;
-	// while (1)
-	// {
-	// 	putchar(getchar());
-	// }
-	
 	startShell();
 
 	//Test if BSS is properly set up
