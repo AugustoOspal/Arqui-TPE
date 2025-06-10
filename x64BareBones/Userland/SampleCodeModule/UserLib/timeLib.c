@@ -1,8 +1,8 @@
 #include <timeLib.h>
 
-// dateTime* getTime() {
-//      return sys_getTime(); 
-// }
+void getDateTime(dateTime *dt) {
+     sys_getDateTime(dt); 
+}
 
 extern void sleepMilli(uint64_t milliseconds){
     sys_sleepMilli(milliseconds);

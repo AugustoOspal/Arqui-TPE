@@ -1,27 +1,27 @@
 #include <shell.h>
 #include <usrio.h>
-#include <usrio.h>
 #include <timeLib.h>
 #include <stringLib.h>
+#include <pongisLib.h>
+#include <videoLib.h>
+
 
 #define BUFFER 500
-#define COMMAND_SIZE 3
+#define COMMAND_SIZE 8
 #define SPECIAL_KEY_MAX_VALUE 5
 
-// char* commands_str[] = {"help", "date", "exit", "registers"};
-char* commands_str[] = {"help", "exit", "registers"};
+char* commands_str[] = {"help", "pongisgolf", "zoom in", "zoom out", "clear", "date", "registers", "exit"};
+
 
 typedef void (*ShellCommand)();
-// static ShellCommand commands[] = {help, printDateTime, exitShell, getRegisters};
-static ShellCommand commands[] = {help, exitShell, getRegisters};
+static ShellCommand commands[] = {help, startPongis , zoom_in, zoom_out, clear_screen, printDateTime, getRegisters, exitShell};
+
 
 char *registers[] = {" RAX: ", " RBX: ", " RCX: ", " RDX: ", " RSI: ", " RDI: ", " RBP: ", " RSP: ", " R8: ", " R9: ", " R10: ", " R11: ", " R12: ", " R13: ", " R14: ", " R15: ", " RIP: "};
 
 void show_prompt() {
     printf("user@itba:> ");
 }
-
-//extern void sys_getRegisters(uint64_t registers);
 
 static uint8_t active = 1;
 
@@ -67,10 +67,8 @@ void readInput(char *buffer){
 
 command_id processInput(char* input){
     int index = -1;
-    printf(input);
     for(int i = 0; i < COMMAND_SIZE && (index == -1); i++) {
         if(strcmp(input, commands_str[i]) == 0){
-            printf("entre");
             index = i;
         }
     }
@@ -86,15 +84,19 @@ void help(){
 }
 
 // Faltan las syscals del dateTime // 
-// void printlDateTime(){
-//     // dateTime *dt;
-//     // dt = getDateTime();
-//     // printf("%d/%d/%d %d:%d:%d\n", dt->day, dt->month, dt->year, dt->hour, dt->min, dt->sec);
-// }
+void printDateTime(){
+    dateTime dt;
+    getDateTime(&dt);
+    printf(" %d/%d/%d %d:%d:%d\n", dt.day, dt.month, dt.year, dt.hour, dt.min, dt.sec);
+}
 
+void startPongis(){
+    printf("Starting Pongis Golf...\n");
+    startPongisGolf();
+}
 
 void notACommand(char* input){
-    printf("Command %s not found. Type 'help' for a list of commands.\n", input);
+    printf("Command \"%s\" not found. Type 'help' for a list of commands.\n", input);
 }
 
 void getRegisters(){
@@ -102,16 +104,27 @@ void getRegisters(){
     uint64_t regsValues[17];
     get_regist(regsValues);
     for (int i = 0; i < 17; i++){
-            printf("\n%s %x",registers[i], regsValues[i]);
+            printf("%s %x\n",registers[i], regsValues[i]);
     }   
-    printf("\n");
+}
+
+void clear_screen() {
+    clearScreen();
+}
+
+void zoom_in() {
+    zoomIn();
+}
+
+void zoom_out() {
+    zoomOut();
 }
 
 void exitShell(){
     printf("\n");
     printf("Exiting...\n");
-    printf("\n");
 
     printf("\n[Exit succesful]\n");
     active = 0;
 }
+

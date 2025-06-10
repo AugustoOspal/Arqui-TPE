@@ -20,4 +20,7 @@ uint16_t getCharWidth();
 uint16_t getCharHeight();
 uint16_t getCharGap();
 
+void zoomIn();
+void zoomOut();
+
 #endif

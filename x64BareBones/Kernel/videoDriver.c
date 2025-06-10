@@ -75,7 +75,7 @@ uint8_t isValidScreenCoordinate(uint16_t x, uint16_t y)
     uint16_t width = getScreenWidth();
     uint16_t height = getScreenHeight();
 
-    return x >= 0 && x < width && y >= 0 && y < height;
+    return x >= 0 && x <= width && y >= 0 && y <= height;
 }
 
 // Si queremos chequear si un string va a entrar en la pantalla hay que decirle el ancho y alto del string
@@ -169,7 +169,7 @@ void drawString(const char* str, uint32_t hexColor, uint64_t x, uint64_t y)
 }
 
 void drawRectangle(uint64_t width, uint64_t heigth, uint32_t hexColor, uint64_t x, uint64_t y)
-{
+{   
     if (!isValidScreenPrint(x, y, width, heigth)) return;
 
 	for (uint64_t i = x; i < x + width; i++)
@@ -214,5 +214,5 @@ void drawBin(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y)
 
 void clearScreen(void)
 {
-	drawRectangle(VBE_mode_info->width, VBE_mode_info->height, 0x00000000, 0, 0);
+	drawRectangle(getScreenWidth(), getScreenHeight(), 0x00000000, 0, 0);
 }

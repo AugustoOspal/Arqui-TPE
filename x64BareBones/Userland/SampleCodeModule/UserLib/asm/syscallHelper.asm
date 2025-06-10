@@ -15,7 +15,10 @@ GLOBAL sys_write
 GLOBAL sys_read
 
 GLOBAL sys_getRegisters
-GLOBAL sys_getTime
+GLOBAL sys_getDateTime
+
+GLOBAL sys_zoomIn
+GLOBAL sys_zoomOut
 
 GLOBAL sys_playSound
 GLOBAL sys_sleepMilli
@@ -32,7 +35,10 @@ sys_write:              syscall 0x1
 sys_read:               syscall 0x2
 
 sys_getRegisters:       syscall 0x04
-sys_getTime:            syscall 0x05  
+sys_getDateTime:        syscall 0x05
+
+sys_zoomIn:             syscall 0x06
+sys_zoomOut:            syscall 0x07
 
 ; Video
 sys_clearScreen:        syscall 0x10

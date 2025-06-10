@@ -4,6 +4,6 @@
 #include <videoLib.h>
 #include <soundLib.h>
 
-int startPongisGolf();
+void startPongisGolf();
 
 #endif

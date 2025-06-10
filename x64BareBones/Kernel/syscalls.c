@@ -1,4 +1,5 @@
 #include <syscalls.h>
+#include <videoDriver.h>
 
 #define STDIN  0
 #define STDOUT 1
@@ -113,15 +114,6 @@ uint64_t sys_read(uint8_t fd, char *buffer, uint64_t count)
     return 0;
 }
 
-// void getTime(dateTime *dt) 
-// {
-//     dt->sec = getSysSeconds();
-//     dt->min = getSysMinutes();
-//     dt->hour = getSysHours();
-//     dt->day = getSysDayOfWeek();
-//     dt->month = getSysMonth();
-//     dt->year = getSysYear();
-// }
 
 void syscallDispatcher(Registers_t *regs) 
 {
@@ -160,14 +152,24 @@ void syscallDispatcher(Registers_t *regs)
             regs->rax = 0;
             break;
 
-        // case 0x05:
-        //     dateTime *dt;
-        //     getTime(dt);
-        //     regs->rax = dt;
-        //     break;
+        case 0x05:
+            dateTime *dt = (dateTime *)arg1;
+            getTime(dt);
+            regs->rax = 0;
+            break;
+
+        case 0x06:
+            drawString("ZOOM IN PERRO", VERDE, 200, 200);
+            break;
+        
+        case 0x07:
+            drawString("ZOOM OUT PERRO", VIOLETA, 250, 250);
+            break;
 
         case 0x10:
             clearScreen();
+            x_coord = 0;
+            y_coord = 0;
             regs->rax = 0;
             break;
 
@@ -235,3 +237,4 @@ void syscallDispatcher(Registers_t *regs)
             break;
     }
 }
+
