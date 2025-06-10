@@ -55,3 +55,30 @@ unsigned int strlenght(const char* str)
 	for (counter = 0; str[counter];counter++);
 	return counter;
 }
+
+// Convierte value a cadena en base “base” (2,10,16…) y la escribe en buffer (debe tener espacio suficiente).
+// Devuelve buffer.
+char* uint64ToString(uint64_t value, char *buffer, int base) {
+    char *p = buffer, *p1, tmp;
+    uint64_t v = value;
+    if (v == 0) {
+        *p++ = '0';
+        *p   = '\0';
+        return buffer;
+    }
+    // Generar dígitos en orden inverso
+    while (v) {
+        int digit = v % base;
+        *p++ = digit < 10 ? '0' + digit : 'a' + (digit - 10);
+        v /= base;
+    }
+    *p-- = '\0';
+    // Invertir la cadena
+    p1 = buffer;
+    while (p1 < p) {
+        tmp  = *p;
+        *p-- = *p1;
+        *p1++ = tmp;
+    }
+    return buffer;
+}

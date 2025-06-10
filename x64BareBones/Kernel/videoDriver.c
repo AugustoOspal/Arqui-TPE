@@ -139,98 +139,44 @@ uint16_t getRemainingScreenWidth(uint16_t x_coord)
 //     }
 // }
 
-void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
-{
-    FontChar font = getCharBitMap(c);
-    if (font.bitmap == NULL)
-        return;
+static void putPixelIfValid(uint32_t color, int64_t x, int64_t y) {
+    uint16_t w = getScreenWidth(), h = getScreenHeight();
+    if (x >= 0 && x < w && y >= 0 && y < h)
+        putPixel(color, x, y);
+}
 
-    int height = font.height;
-    int width  = font.width;
+void drawChar(char c, uint32_t color, uint64_t x, uint64_t y) {
+    FontChar f = getCharBitMap(c);
+    if (!f.bitmap) return;
+    int baseW = FONT_CHAR_WIDTH_BYTES;
+    int baseH = FONT_CHAR_HEIGHT_BYTES;
+    int scale = f.width / baseW;  // 1,2 o 3
+    if (!isValidScreenPrint(x, y, f.width, f.height)) return;
 
-    if (!isValidScreenPrint(x, y, width, height))
-        return;
-
-    uint32_t bit_mask = font.bitMask;
-
-    switch (width) {
-        case 8: { // SMALL
-            const uint8_t *bitmap = (const uint8_t *)font.bitmap;
-            for (int i = 0; i < height; i++)
-                for (int j = 0; j < 8; j++)
-                    if (bitmap[i] & (bit_mask >> j))
-                        putPixel(hexColor, x + j, y + i);
-            break;
+    for (int row = 0; row < baseH; row++) {
+        uint8_t bits = f.bitmap[row];
+        for (int col = 0; col < baseW; col++) {
+            if (bits & (f.bitMask >> col)) {
+                for (int dy = 0; dy < scale; dy++)
+                    for (int dx = 0; dx < scale; dx++)
+                        putPixelIfValid(color,
+                            x + col*scale + dx,
+                            y + row*scale + dy);
+            }
         }
-        case 16: { // MEDIUM
-            const uint16_t *bitmap = (const uint16_t *)font.bitmap;
-            for (int i = 0; i < height; i++)
-                for (int j = 0; j < 16; j++)
-                    if (bitmap[i] & (bit_mask >> j))
-                        putPixel(hexColor, x + j, y + i);
-            break;
-        }
-        case 24: { // LARGE
-            const uint32_t *bitmap = (const uint32_t *)font.bitmap;
-            for (int i = 0; i < height; i++)
-                for (int j = 0; j < 24; j++)
-                    if (bitmap[i] & (bit_mask >> j))
-                        putPixel(hexColor, x + j, y + i);
-            break;
-        }
-        default:
-            // Fuente desconocida
-            return;
     }
 }
 
-
-static uint32_t uint64ToString(uint64_t value, char * buffer, uint32_t base)
-{
-    char *p = buffer;
-    char *p1, *p2;
-    uint32_t digits = 0;
-
-    // Handle 0 explicitly, otherwise empty string appears
-    if (value == 0) {
-        *p++ = '0';
-        digits = 1;
-    } else {
-        //Calculate characters for each digit
-        do
-        {
-            uint32_t remainder = value % base;
-            *p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
-            digits++;
+void drawString(const char* s, uint32_t hexColor, uint64_t x, uint64_t y) {
+    int w = getWidth(), h = getHeight();
+    for (const char *p = s; *p; p++) {
+        if (!isValidScreenPrint(x, y, w, h)) {
+            x = 0; y += h + FONT_CHAR_GAP;
+            if (!isValidScreenPrint(x, y, w, h)) break;
         }
-        while (value /= base);
+        drawChar(*p, hexColor, x, y);
+        x += w + FONT_CHAR_GAP;
     }
-
-    // Terminate string in buffer.
-    *p = 0;
-
-    //Reverse string in buffer.
-    p1 = buffer;
-    p2 = p - 1;
-    while (p1 < p2)
-    {
-        char tmp = *p1;
-        *p1 = *p2;
-        *p2 = tmp;
-        p1++;
-        p2--;
-    }
-    return digits;
-}
-
-void drawString(const char* str, uint32_t hexColor, uint64_t x, uint64_t y)
-{
-    int width = getWidth();
-	unsigned int strlen = strlenght(str);
-	for (unsigned int i = 0; i < strlen; i++)
-	{
-		drawChar(str[i], hexColor, x + (width + FONT_CHAR_GAP) * i, y);
-	}
 }
 
 void drawRectangle(uint64_t width, uint64_t heigth, uint32_t hexColor, uint64_t x, uint64_t y)
@@ -244,14 +190,6 @@ void drawRectangle(uint64_t width, uint64_t heigth, uint32_t hexColor, uint64_t 
 			putPixel(hexColor, i, j);
 		}
 	}
-}
-
-static void putPixelIfValid(uint32_t hexColor, uint64_t x, uint64_t y)
-{
-    if (isValidScreenCoordinate(x, y))
-    {
-        putPixel(hexColor, x, y);
-    }
 }
 
 static void plotCircleOctants(uint32_t hexColor, int64_t xc, int64_t yc, int64_t dx, int64_t dy)

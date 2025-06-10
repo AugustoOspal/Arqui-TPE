@@ -162,7 +162,7 @@ void syscallDispatcher(Registers_t *regs)
             break;
 
         case 0x06:
-            void zoomInFont();
+            zoomInFont();
             clearScreen();
             x_coord = 0;
             y_coord = 0;
@@ -170,7 +170,7 @@ void syscallDispatcher(Registers_t *regs)
             break;
         
         case 0x07:
-            void zoomOutFont();
+            zoomOutFont();
             clearScreen();
             x_coord = 0;
             y_coord = 0;
