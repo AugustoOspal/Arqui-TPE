@@ -10,11 +10,62 @@
 #include <pongisconfig.h>
 
 /*
-    TODO: EL MIP TENDRIA QUE SER UN ADT. Pero no se puede
-    porque no tenemos malloc
+    Estaria bueno hacer un ADT pero no podemos porque
+    no tenemos malloc
 */
 
+typedef struct MipT
+{
+    uint64_t x;
+    uint64_t y;
+    uint64_t speed;
+    uint64_t radius;
+    uint32_t color;
+    int16_t degree; // 0 arriba, 1 derecha, 2 abajo, 3 izquierda  
+}MipT;
+
+typedef struct BallT
+{
+    uint64_t x;
+    uint64_t y;
+    uint64_t speed;
+    uint64_t radius;
+    uint32_t color;
+}BallT;
+
+typedef struct HoleT
+{
+    uint64_t x;
+    uint64_t y;
+    uint64_t radius;
+    uint32_t color;
+}HoleT;
+
+typedef MipT* MipP;
+typedef BallT* BallP;
+typedef HoleT* HoleP;
+
+// Helpers
+void drawLevel(MipP mip1, MipP mip2, BallP ball, HoleP hole);
+uint8_t checkColisionMipBall(MipP mip, BallP ball);
+uint8_t checkValidScreenPosition(uint32_t x, uint32_t y, uint32_t radius);
+
+// Pelota
+void drawBall(BallP ball);
+void eraseBall(BallP ball);
+void moveBall(BallP ball, MipP mip);
+
+// Mip
 void startPongisGolf();
-void drawMIP(uint64_t x, uint64_t y);
+void drawMip(MipP mip);
+void walkMip(MipP mip);
+void eraseMip(MipP mip);
+void changeMipDir(MipP mip, uint16_t degree);
+uint16_t getMipDegree(MipP mip);
+
+// Agujero
+void eraseHole(HoleP hole);
+void drawHole(HoleP hole);
+uint8_t checkHoleCollision(BallP ball, HoleP hole);
 
 #endif

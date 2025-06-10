@@ -1,9 +1,12 @@
-#ifndef _SOUND_LIB_H_
-#define _SOUND_LIB_H_
+#ifndef SOUNDLIB_H
+#define SOUNDLIB_H
 
+#include <syscallLib.h>
 #include <stdint.h>
-#include <soundLib.h>
 
 void playSound(uint32_t frequency, uint32_t duration);
+void playHitSound();
+void playStartMusic();    // Corregido el nombre
+void playHoleMusic();
 
 #endif
