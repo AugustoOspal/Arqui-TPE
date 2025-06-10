@@ -3,9 +3,47 @@
 static uint8_t playersCounter = 0;
 
 // Helpers
-void drawLevel(MipP mip1, MipP mip2, BallP ball, HoleP hole)
-{
+
+/*
+    Esta forma no nos gusta mucho, proque lo ideal seria hacerlo con un ADT
+    pero no tenemos malloc
+*/
+void drawLevel(uint16_t level, MipP mip1, MipP mip2, uint8_t twoPlayers, BallP ball, HoleP hole)
+{   
     paintScreen(BACKGROUND_COLOR);
+    
+    switch (level)
+    {
+    case 1:
+        // Mip1
+        mip1->x = MIP_INITIAL_X;
+        mip1->y = MIP_INITIAL_Y;
+        drawMip(mip1);
+
+        // Mip2
+        if (twoPlayers) 
+        {
+            mip2->x = MIP_INITIAL_X;
+            mip2->y = MIP_INITIAL_Y + 100;
+            drawMip(mip2);
+        }
+
+        // Pelota
+        ball->x = BALL_INITIAL_X;
+        ball->y = BALL_INITIAL_Y;
+        drawBall(ball);
+
+        // Agujero
+        hole->x = HOLE_DEFAULT_X;
+        hole->y = HOLE_DEFAULT_Y;
+        hole->radius = HOLE_DEFAULT_RADIUS + 30;
+        drawHole(hole);
+        break;
+
+    default:
+        break;
+    }
+
 }
 
 uint8_t checkColisionMipBall(const MipP mip, const BallP ball)
@@ -33,7 +71,7 @@ uint8_t checkValidScreenPosition(uint32_t x, uint32_t y, uint32_t radius)
     uint32_t screenWidth = getScreenWidth();
     uint32_t screenHeight = getScreenHeight();
 
-    return (x + radius >= screenWidth || x <= radius || y + radius >= screenHeight || y <= radius);
+    return (x + radius < screenWidth && x >= radius && y + radius < screenHeight && y >= radius);
 }
 
 
@@ -99,25 +137,27 @@ void walkMip(MipP mip)
         de que actualice la posicion
     */
 
+    eraseMip(mip);
     switch(mip->degree) {
         case 0: // Arriba
-            eraseMip(mip);
-            if (!checkValidScreenPosition(mip->x, mip->y - mip->speed, mip->radius)) {
-                break;
+            if (checkValidScreenPosition(mip->x, mip->y - mip->speed, mip->radius)) {
+                mip->y -= mip->speed;
             }
-            mip->y -= mip->speed;
             break;
         case 1: // Derecha
-            eraseMip(mip);
-            mip->x += mip->speed;
+            if (checkValidScreenPosition(mip->x + mip->speed, mip->y, mip->radius)) {
+                mip->x += mip->speed;
+            }
             break;
         case 2: // Abajo
-            eraseMip(mip);
-            mip->y += mip->speed;
+            if (checkValidScreenPosition(mip->x, mip->y + mip->speed, mip->radius)) {
+                mip->y += mip->speed;
+            }
             break;
         case 3: // Izquierda
-            eraseMip(mip);
-            mip->x -= mip->speed;
+            if (checkValidScreenPosition(mip->x - mip->speed, mip->y, mip->radius)) {
+                mip->x -= mip->speed;
+            }
             break;
         default:
             break;
@@ -150,16 +190,24 @@ void moveBall(BallP ball, MipP mip)
     // Calcular la nueva posición de la pelota
     switch(mip->degree) {
         case 0: // Arriba
-            ball->y -= BALL_INITIAL_SPEED;
+            if (checkValidScreenPosition(ball->x, ball->y - BALL_INITIAL_SPEED, ball->radius)) {
+                ball->y -= BALL_INITIAL_SPEED;
+            }
             break;
         case 1: // Derecha
-            ball->x += BALL_INITIAL_SPEED;
+            if (checkValidScreenPosition(ball->x + BALL_INITIAL_SPEED, ball->y, ball->radius)) {
+                ball->x += BALL_INITIAL_SPEED;
+            }
             break;
         case 2: // Abajo
-            ball->y += BALL_INITIAL_SPEED;
+            if (checkValidScreenPosition(ball->x, ball->y + BALL_INITIAL_SPEED, ball->radius)) {
+                ball->y += BALL_INITIAL_SPEED;
+            }
             break;
         case 3: // Izquierda
-            ball->x -= BALL_INITIAL_SPEED;
+            if (checkValidScreenPosition(ball->x - BALL_INITIAL_SPEED, ball->y, ball->radius)) {
+                ball->x -= BALL_INITIAL_SPEED;
+            }
             break;
         default:
             break;

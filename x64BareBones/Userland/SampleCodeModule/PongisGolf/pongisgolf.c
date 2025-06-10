@@ -37,7 +37,7 @@ void startPongisGolf()
         .color = HOLE_COLOR
     };
 
-    drawLevel(&mip1, &mip2, &ball, &hole);
+    drawLevel(1 ,&mip1, &mip2, 1, &ball, &hole);
 
     playStartMusic();
     drawMip(&mip1);
@@ -48,9 +48,10 @@ void startPongisGolf()
     while (1) {
         c = getchar();
         switch (c) {
+
+            // Jugador 1
             case 'w': // Arriba
                 walkMip(&mip1);
-                
                 if (checkColisionMipBall(&mip1, &ball)) {
                     moveBall(&ball, &mip1);
                     drawMip(&mip1);
@@ -59,7 +60,6 @@ void startPongisGolf()
                 if (checkHoleCollision(&ball, &hole)) {
                     playHoleMusic();
                 }
-
                 break;
             case 'd': // Derecha
                 changeMipDir(&mip1,(getMipDegree(&mip1) + 1) % 4);
@@ -68,8 +68,27 @@ void startPongisGolf()
                 uint8_t mipDegree = getMipDegree(&mip1) - 1;
                 changeMipDir(&mip1,(mipDegree < 0 ? mipDegree + 4 : mipDegree) % 4);
                 break;
-            case 'q': // Salir
-                return;
+
+            // Jugador 2
+            case 'i': // Arriba
+                walkMip(&mip2);
+                if (checkColisionMipBall(&mip2, &ball)) {
+                    moveBall(&ball, &mip2);
+                    drawMip(&mip2);
+                    playHitSound();
+                }
+                if (checkHoleCollision(&ball, &hole)) {
+                    playHoleMusic();
+                }
+                break;
+            case 'l': // Derecha
+                changeMipDir(&mip2,(getMipDegree(&mip2) + 1) % 4);
+                break;
+            case 'j': // Izquierda
+                mipDegree = getMipDegree(&mip2) - 1;
+                changeMipDir(&mip2,(mipDegree < 0 ? mipDegree + 4 : mipDegree) % 4);
+                break;
+
             default:
                 continue; // Ignorar otras teclas
         }

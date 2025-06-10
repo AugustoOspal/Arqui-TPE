@@ -25,4 +25,6 @@
 #define HOLE_DEFAULT_X              500
 #define HOLE_DEFAULT_Y              500
 
+#define LEVEL_COUNT                 1
+
 #endif

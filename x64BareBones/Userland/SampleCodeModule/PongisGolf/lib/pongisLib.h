@@ -8,6 +8,7 @@
 #include <videoLib.h>
 #include <soundLib.h>
 #include <pongisconfig.h>
+#include <pongisLevels.h>
 
 /*
     Estaria bueno hacer un ADT pero no podemos porque
@@ -45,8 +46,23 @@ typedef MipT* MipP;
 typedef BallT* BallP;
 typedef HoleT* HoleP;
 
+/*
+    Esto al final no lo usamos, pero lo dejamos porque es lo que vamos a usar
+    cuando implementemos malloc en SO.
+*/
+typedef struct LevelT
+{
+    uint16_t level;
+    MipP mip1;
+    MipP mip2;
+    BallP ball;
+    HoleP hole;
+}LevelT;
+
+typedef LevelT* LevelP;
+
 // Helpers
-void drawLevel(MipP mip1, MipP mip2, BallP ball, HoleP hole);
+void drawLevel(uint16_t level, MipP mip1, MipP mip2, uint8_t twoPlayers, BallP ball, HoleP hole);
 uint8_t checkColisionMipBall(MipP mip, BallP ball);
 uint8_t checkValidScreenPosition(uint32_t x, uint32_t y, uint32_t radius);
 
