@@ -2,6 +2,9 @@
 #include <pongisLib.h>
 #include <pongisconfig.h>
 
+static uint8_t playersCounter = 1;
+static uint8_t winner;
+
 void startPongisGolf() 
 {
     MipT mip1 = {
@@ -37,12 +40,12 @@ void startPongisGolf()
         .color = HOLE_COLOR
     };
 
-    drawLevel(1 ,&mip1, &mip2, 1, &ball, &hole);
+    playersCounter = startMenu(&mip1, &mip2);
+    drawLevel(1 ,&mip1, &mip2, &ball, &hole);
 
-    playStartMusic();
-    drawMip(&mip1);
-    drawBall(&ball);
-    drawHole(&hole);
+    // TODO: Falta chequear que no colisionen los mips
+
+    uint8_t mipDegree;
 
     char c;
     while (1) {
@@ -57,40 +60,49 @@ void startPongisGolf()
                     drawMip(&mip1);
                     playHitSound();
                 }
+
                 if (checkHoleCollision(&ball, &hole)) {
-                    playHoleMusic();
+                    winner = 1;
+                    endMenu(winner);
                 }
                 break;
             case 'd': // Derecha
                 changeMipDir(&mip1,(getMipDegree(&mip1) + 1) % 4);
                 break;
             case 'a': // Izquierda
-                uint8_t mipDegree = getMipDegree(&mip1) - 1;
+                mipDegree = getMipDegree(&mip1) - 1;
                 changeMipDir(&mip1,(mipDegree < 0 ? mipDegree + 4 : mipDegree) % 4);
                 break;
+        }
 
-            // Jugador 2
-            case 'i': // Arriba
-                walkMip(&mip2);
-                if (checkColisionMipBall(&mip2, &ball)) {
-                    moveBall(&ball, &mip2);
-                    drawMip(&mip2);
-                    playHitSound();
-                }
-                if (checkHoleCollision(&ball, &hole)) {
-                    playHoleMusic();
-                }
-                break;
-            case 'l': // Derecha
-                changeMipDir(&mip2,(getMipDegree(&mip2) + 1) % 4);
-                break;
-            case 'j': // Izquierda
-                mipDegree = getMipDegree(&mip2) - 1;
-                changeMipDir(&mip2,(mipDegree < 0 ? mipDegree + 4 : mipDegree) % 4);
-                break;
+        if (playersCounter == 2)
+        {
+            switch (c)
+            {
+                // Jugador 2
+                case 'i': // Arriba
+                    walkMip(&mip2);
+                    if (checkColisionMipBall(&mip2, &ball)) {
+                        moveBall(&ball, &mip2);
+                        drawMip(&mip2);
+                        playHitSound();
+                    }
+                    if (checkHoleCollision(&ball, &hole)) {
+                        winner = 2;
+                        endMenu(winner);
+                    }
+                    break;
+                case 'l': // Derecha
+                    changeMipDir(&mip2,(getMipDegree(&mip2) + 1) % 4);
+                    break;
+                case 'j': // Izquierda
+                    mipDegree = getMipDegree(&mip2) - 1;
+                    changeMipDir(&mip2,(mipDegree < 0 ? mipDegree + 4 : mipDegree) % 4);
+                    break;
 
-            default:
-                continue; // Ignorar otras teclas
+                default:
+                    continue; // Ignorar otras teclas
+            }
         }
     }
 

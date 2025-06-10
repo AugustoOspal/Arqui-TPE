@@ -27,4 +27,6 @@
 
 #define LEVEL_COUNT                 1
 
+#define MAX_PLAYERS                 2
+
 #endif

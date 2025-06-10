@@ -3,6 +3,7 @@
 
 #include <usrio.h>
 #include <color.h>
+#include <shell.h>
 #include <stdint.h>
 #include <soundLib.h>
 #include <videoLib.h>
@@ -62,9 +63,11 @@ typedef struct LevelT
 typedef LevelT* LevelP;
 
 // Helpers
-void drawLevel(uint16_t level, MipP mip1, MipP mip2, uint8_t twoPlayers, BallP ball, HoleP hole);
+void drawLevel(uint16_t level, MipP mip1, MipP mip2, BallP ball, HoleP hole);
 uint8_t checkColisionMipBall(MipP mip, BallP ball);
 uint8_t checkValidScreenPosition(uint32_t x, uint32_t y, uint32_t radius);
+uint8_t startMenu(MipP mip1, MipP mip2);
+void endMenu(uint8_t winner);
 
 // Pelota
 void drawBall(BallP ball);
@@ -78,6 +81,7 @@ void walkMip(MipP mip);
 void eraseMip(MipP mip);
 void changeMipDir(MipP mip, uint16_t degree);
 uint16_t getMipDegree(MipP mip);
+uint8_t checkColisionMipMip(MipP mip1, MipP mip2);
 
 // Agujero
 void eraseHole(HoleP hole);

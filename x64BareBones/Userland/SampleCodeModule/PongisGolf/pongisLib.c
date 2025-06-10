@@ -8,7 +8,70 @@ static uint8_t playersCounter = 0;
     Esta forma no nos gusta mucho, proque lo ideal seria hacerlo con un ADT
     pero no tenemos malloc
 */
-void drawLevel(uint16_t level, MipP mip1, MipP mip2, uint8_t twoPlayers, BallP ball, HoleP hole)
+
+// Devuelve la cantidad de jugadores
+uint8_t startMenu(MipP mip1, MipP mip2)
+{
+    uint32_t colores[] = {WHITE, ORANGE, TURQUOISE, OLIVE};
+
+    uint16_t linesWritten = 0;
+
+    clearScreen();
+    printf("Welcome to Pongis Golf!\n");
+    printf("Slect 1 or 2 players\n");
+    do
+    {
+        playersCounter = getchar() - '0';
+    }while (playersCounter < 0 && playersCounter > MAX_PLAYERS);
+    clearScreen();
+
+    for (unsigned int player = 1; player <= playersCounter; player++)
+    {
+        printf("Select Mip%d color:\n", player);
+        printf("1. White\n");
+        printf("2. Orange\n");
+        printf("3. Turquoise\n");
+        printf("4. Olive\n");
+
+        uint8_t colorChoice;
+        do
+        {
+            colorChoice = getchar() - '0';
+        } while (colorChoice < 1 || colorChoice > 4);
+
+        if (player == 1) {
+            mip1->color = colores[colorChoice - 1];
+        } else {
+            mip2->color = colores[colorChoice - 1];
+        }
+        clearScreen();
+    }
+
+    return playersCounter;
+}
+
+void endMenu(uint8_t winner)
+{
+    clearScreen();
+
+    /*
+        TODO: Habria que cambiar drawString para evitar esto
+        TODO: Arreglar esto
+    */
+
+    if (winner == 1)
+    {
+        drawString(getScreenWidth() / 2, getScreenHeight() / 2, "Player 1 wins!!!", WHITE);
+    }
+
+    else if (winner == 2)
+    {
+        drawString(getScreenWidth() / 2, getScreenHeight() / 2, "Player 2 wins!!!", WHITE);
+    }
+    playHoleMusic();
+}
+
+void drawLevel(uint16_t level, MipP mip1, MipP mip2, BallP ball, HoleP hole)
 {   
     paintScreen(BACKGROUND_COLOR);
     
@@ -21,7 +84,7 @@ void drawLevel(uint16_t level, MipP mip1, MipP mip2, uint8_t twoPlayers, BallP b
         drawMip(mip1);
 
         // Mip2
-        if (twoPlayers) 
+        if (playersCounter == 2) 
         {
             mip2->x = MIP_INITIAL_X;
             mip2->y = MIP_INITIAL_Y + 100;
@@ -44,6 +107,7 @@ void drawLevel(uint16_t level, MipP mip1, MipP mip2, uint8_t twoPlayers, BallP b
         break;
     }
 
+    playStartMusic();
 }
 
 uint8_t checkColisionMipBall(const MipP mip, const BallP ball)
@@ -168,6 +232,26 @@ void walkMip(MipP mip)
 uint16_t getMipDegree(MipP mip)
 {
     return mip->degree;
+}
+
+uint8_t checkColisionMipMip(MipP mip1, MipP mip2)
+{
+    // Calcular la distancia entre los centros de ambos Mips
+    int64_t dx = (int64_t)mip1->x - (int64_t)mip2->x;
+    int64_t dy = (int64_t)mip1->y - (int64_t)mip2->y;
+    
+    // Pitagoras
+    uint64_t distanceSquared = (dx * dx) + (dy * dy);
+    
+    // Calcular la suma de los radios
+    uint64_t radiiSum = mip1->radius + mip2->radius;
+    
+    // Calcular la suma de radios al cuadrado
+    uint64_t radiiSumSquared = radiiSum * radiiSum;
+    
+    // Si la distancia al cuadrado es menor o igual que la suma de radios al cuadrado,
+    // entonces hay colisión
+    return distanceSquared <= radiiSumSquared;
 }
 
 
