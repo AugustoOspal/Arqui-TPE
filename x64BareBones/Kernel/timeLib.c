@@ -1,5 +1,6 @@
 #include <timeLib.h>
 #include <interrupts.h>
+#include <syscalls.h>
 
 static unsigned long ticks = 0;
 
@@ -39,11 +40,31 @@ void sleep(uint64_t milliseconds) {
 	// _cli();
 }
 
-// void getDateTime(dateTime *dt) {
-// 		dt->sec = getSysSeconds();
-// 		dt->min = getSysMinutes();
-// 		dt->hour = getSysHours();
-// 		dt->day = getSysDayOfMonth();
-// 		dt->month = getSysMonth();
-// 		dt->year = getSysYear();
-// }
+uint16_t getSec(){
+	return getSysSeconds();
+}
+uint16_t getMin(){
+	return getSysMinutes();
+}
+uint16_t  getHour(){
+	return getSysHours();
+}
+uint16_t getDay(){
+	return getSysDayOfMonth();
+}
+uint16_t  getMonth(){
+	return getSysMonth();
+}
+uint16_t getYear(){
+	return getSysYear();
+}
+
+void getTime(dateTime *dt) {
+		dt->sec = getSec();
+		dt->min = getMin();
+		dt->hour = getHour()-3;
+		dt->day = getDay();
+		dt->month = getMonth();
+		dt->year = getYear();
+}
+

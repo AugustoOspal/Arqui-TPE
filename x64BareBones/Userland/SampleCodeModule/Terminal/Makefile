@@ -1,6 +1,6 @@
 include ../../Makefile.inc
 
-MY_CFLAGS := $(GCCFLAGS) -Ilib -I../UserLib/include
+MY_CFLAGS := $(GCCFLAGS) -Ilib -I../UserLib/include -I../PongisGolf/lib
 CSOURCES  := $(wildcard *.c)
 OBJECTS   := $(CSOURCES:.c=.o)
 LIB       := libterminal.a

@@ -23,4 +23,7 @@ uint16_t getCharGap();
 
 void paintScreen(uint32_t hexColor);
 
+void zoomIn();
+void zoomOut();
+
 #endif

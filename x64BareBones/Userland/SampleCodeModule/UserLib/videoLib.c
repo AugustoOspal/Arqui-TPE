@@ -51,3 +51,10 @@ void paintScreen(uint32_t hexColor) {
 void drawCircle(uint64_t radius, uint32_t hexColor, uint64_t x, uint64_t y) {
     sys_drawCircle(radius, hexColor, x, y);
 }
+void zoomIn() {
+    sys_zoomIn();
+}
+
+void zoomOut() {
+    sys_zoomOut();
+}
