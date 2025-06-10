@@ -58,7 +58,6 @@ FontChar getCharBitMap(char c);
 int getWidth();
 int getHeight();
 
-extern int currentFont;
 void zoomIn();
 void zoomOut();
 
