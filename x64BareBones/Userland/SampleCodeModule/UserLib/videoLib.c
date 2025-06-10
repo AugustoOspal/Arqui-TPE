@@ -41,3 +41,13 @@ uint16_t getScreenWidth() {
 uint16_t getScreenHeight() {
     return sys_getScreenHeight();
 }
+
+void paintScreen(uint32_t hexColor) {
+    uint16_t width = getScreenWidth();
+    uint16_t height = getScreenHeight();
+    drawRectangle(width, height, hexColor, 0, 0);
+}
+
+void drawCircle(uint64_t radius, uint32_t hexColor, uint64_t x, uint64_t y) {
+    sys_drawCircle(radius, hexColor, x, y);
+}

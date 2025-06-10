@@ -1,8 +1,32 @@
+#include <color.h>
 #include <pongisLib.h>
+#include <pongisconfig.h>
 
-int startPongisGolf() 
+static uint64_t mipX = 100;
+static uint64_t mipY = 100;
+
+void startPongisGolf() 
 {
-    drawRectangle(1000, 1000, 0x00FF00, 0, 0); // Draw a green rectangle
-    drawString("Pongis Golf", 0xFFFFFF, 100, 100); // Draw a white string at (100, 100)
+    clearScreen();
+    paintScreen(BACKGROUND_COLOR);
+    drawMIP(mipX, mipY);
+
+
+    /*
+        Toda esta parte es tester para ver mas o menos como deberia ser
+    */
+    char c;
+    while (1)
+    {
+        c = getchar();
+        if (c == 'd')
+        {
+            drawCircle(MIP_RADIUS, BACKGROUND_COLOR, mipX, mipY); // Limpiar el MIP
+            mipX += MIP_INITIAL_SPEED;
+            drawMIP(mipX, mipY);
+        }
+    }
+    
+
     return 0;
 }

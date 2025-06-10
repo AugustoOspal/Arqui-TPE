@@ -218,6 +218,12 @@ void syscallDispatcher(Registers_t *regs)
             regs->rax = kbd_get_char();
             break;
 
+        // TODO: este no quedo organizado como los demas
+        case 0x21:
+            drawCircle(arg1, (uint32_t)arg2, arg3, arg4);
+            regs->rax = 0;
+            break;
+
         case 0x30:
             playSoundForDuration((uint32_t)arg1, (uint32_t)arg2);
             regs->rax = 0;

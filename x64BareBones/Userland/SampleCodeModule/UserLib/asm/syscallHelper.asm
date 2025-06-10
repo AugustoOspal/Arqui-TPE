@@ -3,6 +3,7 @@ GLOBAL sys_putPixel
 GLOBAL sys_drawChar
 GLOBAL sys_drawString
 GLOBAL sys_drawRectangle
+GLOBAL sys_drawCircle
 GLOBAL sys_drawDecimal
 GLOBAL sys_drawHexa
 GLOBAL sys_drawBin
@@ -45,6 +46,7 @@ sys_drawHexa:           syscall 0x16
 sys_drawBin:            syscall 0x17
 sys_getScreenWidth:     syscall 0x18
 sys_getScreenHeight:    syscall 0x19
+sys_drawCircle:         syscall 0x21    ;TODO: Organizar esto
 
 ; Teclado
 sys_kbdGetChar:         syscall 0x20

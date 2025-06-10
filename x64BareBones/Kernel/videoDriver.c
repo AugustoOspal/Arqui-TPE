@@ -89,7 +89,7 @@ uint8_t isValidScreenCoordinate(uint16_t x, uint16_t y)
 */
 uint8_t isValidScreenPrint(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 {
-    return isValidScreenCoordinate(x, y) && isValidScreenCoordinate(x + width, y + height);
+    return isValidScreenCoordinate(x, y) && isValidScreenCoordinate(x + width - 1, y + height - 1);
 }
 
 uint16_t getRemainingScreenWidth(uint16_t x_coord)
@@ -181,6 +181,76 @@ void drawRectangle(uint64_t width, uint64_t heigth, uint32_t hexColor, uint64_t 
 	}
 }
 
+static void putPixelIfValid(uint32_t hexColor, uint64_t x, uint64_t y)
+{
+    if (isValidScreenCoordinate(x, y))
+    {
+        putPixel(hexColor, x, y);
+    }
+}
+
+static void plotCircleOctants(uint32_t hexColor, int64_t xc, int64_t yc, int64_t dx, int64_t dy)
+{  
+    putPixelIfValid(hexColor, xc + dx, yc + dy);
+    putPixelIfValid(hexColor, xc - dx, yc + dy);
+    putPixelIfValid(hexColor, xc + dx, yc - dy);
+    putPixelIfValid(hexColor, xc - dx, yc - dy);
+    putPixelIfValid(hexColor, xc + dy, yc + dx);
+    putPixelIfValid(hexColor, xc - dy, yc + dx);
+    putPixelIfValid(hexColor, xc + dy, yc - dx);
+    putPixelIfValid(hexColor, xc - dy, yc - dx);
+}
+
+static void drawHLine(uint32_t hexColor, int64_t x1, int64_t x2, int64_t y) {
+    if (x1 > x2) { int64_t t = x1; x1 = x2; x2 = t; }
+    for (int64_t x = x1; x <= x2; x++) {
+        putPixelIfValid(hexColor, x, y);
+    }
+}
+
+// Dibuja los segmentos horizontales correspondientes a los 8 octantes,
+// rellenando el círculo
+static void fillCircleOctants(uint32_t hexColor,
+                              int64_t xc, int64_t yc,
+                              int64_t dx, int64_t dy)
+{
+    // Octantes “superiores” e “inferiores”
+    drawHLine(hexColor, xc - dx, xc + dx, yc + dy);
+    drawHLine(hexColor, xc - dx, xc + dx, yc - dy);
+    // Octantes con roles invertidos
+    drawHLine(hexColor, xc - dy, xc + dy, yc + dx);
+    drawHLine(hexColor, xc - dy, xc + dy, yc - dx);
+}
+
+void drawCircle(uint64_t radius, uint32_t hexColor, uint64_t x_center, uint64_t y_center)
+{
+    int64_t xc = (int64_t)x_center;
+    int64_t yc = (int64_t)y_center;
+    int64_t r  = (int64_t)radius;
+
+    if (r <= 0) {
+        putPixelIfValid(hexColor, xc, yc);
+        return;
+    }
+
+    int64_t x = 0;
+    int64_t y = r;
+    int64_t p = 1 - r;
+
+    // Dibuja la línea central y sus simétricas
+    fillCircleOctants(hexColor, xc, yc, x, y);
+
+    while (x < y) {
+        x++;
+        if (p < 0) {
+            p += 2*x + 1;
+        } else {
+            y--;
+            p += 2*x + 1 - 2*y;
+        }
+        fillCircleOctants(hexColor, xc, yc, x, y);
+    }
+}
 
 // Para estas funciones, la que chequa si entran en la pantalla es drawString
 void drawDecimal(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y)
