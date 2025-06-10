@@ -1,40 +1,52 @@
 include ../Makefile.inc
 
-MODULE    = 0000-sampleCodeModule.bin
-LDSCRIPT  = sampleCodeModule.ld
+MODULE     := 0000-sampleCodeModule.bin
+LDSCRIPT   := sampleCodeModule.ld
 
-# buscamos lib.h en ./include y en UserLib/include
-MY_CFLAGS = $(GCCFLAGS) -I./include -I./UserLib/include
+MY_CFLAGS  := $(GCCFLAGS) \
+               -Iinclude \
+               -IUserLib/include \
+               -ITerminal/lib \
+               -IPongisGolf/lib
 
-# fuentes y objetos
-USER_CSOURCES  = $(wildcard [^_]*.c)
-USER_COBJECTS  = $(USER_CSOURCES:.c=-c.o)
-USER_ASMSOURCES= $(wildcard *.asm)
-USER_ASMOBJECTS= $(USER_ASMSOURCES:.asm=-asm.o)
-LOADER_C       = _loader.c
-LOADER_O       = _loader.o
-ALL_OBJECTS    = $(LOADER_O) $(USER_COBJECTS) $(USER_ASMOBJECTS)
+CSOURCES   := $(wildcard [^_]*.c)
+COBJECTS   := $(CSOURCES:.c=.o)
+ASMSOURCES := $(wildcard *.asm)
+ASMOBJS    := $(ASMSOURCES:.asm:.o)
+LOADER_O   := _loader.o
 
-.PHONY: all clean
-all: $(MODULE)
+.PHONY: all clean UserLib Terminal PongisGolf
 
-# 1) compila el loader
-$(LOADER_O): $(LOADER_C)
+all: UserLib Terminal PongisGolf $(MODULE)
+
+UserLib:
+	$(MAKE) -C UserLib
+
+Terminal:
+	$(MAKE) -C Terminal
+
+PongisGolf:
+	$(MAKE) -C PongisGolf
+
+$(LOADER_O): _loader.c
 	$(GCC) $(MY_CFLAGS) -c $< -o $@
 
-# 2) compila .c de usuario
-%-c.o: %.c
+%.o: %.c
 	$(GCC) $(MY_CFLAGS) -c $< -o $@
 
-# 3) ensambla .asm de usuario
-%-asm.o: %.asm
+%.o: %.asm
 	$(ASM) $(ASMFLAGS) $< -o $@
 
-# 4) linkea con la lib que quedó en UserLib/libuserland.a
-$(MODULE): $(ALL_OBJECTS) $(LDSCRIPT) UserLib/libuserland.a
+$(MODULE): $(LOADER_O) $(COBJECTS) $(ASMOBJS) \
+            UserLib/libuserland.a \
+            Terminal/libterminal.a \
+            PongisGolf/libpongisgolf.a
 	$(GCC) $(MY_CFLAGS) -T $(LDSCRIPT) \
-	  $(ALL_OBJECTS) UserLib/libuserland.a \
-	  -o ../$(MODULE) $(LDFLAGS)
+          $(LOADER_O) $(COBJECTS) $(ASMOBJS) Terminal/libterminal.a PongisGolf/libpongisgolf.a UserLib/libuserland.a \
+          -o ../$(MODULE) $(LDFLAGS)
 
 clean:
-	rm -rf $(LOADER_O) *-c.o *-asm.o ../$(MODULE)
+	rm -f $(LOADER_O) $(COBJECTS) $(ASMOBJS) ../$(MODULE)
+	$(MAKE) -C UserLib clean
+	$(MAKE) -C Terminal clean
+	$(MAKE) -C PongisGolf clean

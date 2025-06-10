@@ -1,6 +1,6 @@
 include ../../Makefile.inc
 
-MY_CFLAGS := $(GCCFLAGS) -I./lib -I../UserLib/include
+MY_CFLAGS := $(GCCFLAGS) -Ilib -I../UserLib/include
 CSOURCES  := $(wildcard *.c)
 OBJECTS   := $(CSOURCES:.c=.o)
 LIB       := libpongisgolf.a
@@ -10,10 +10,10 @@ LIB       := libpongisgolf.a
 all: $(LIB)
 
 %.o: %.c
-    $(GCC) $(MY_CFLAGS) -c $< -o $@
+	$(GCC) $(MY_CFLAGS) -c $< -o $@
 
 $(LIB): $(OBJECTS)
-    $(AR) rcs $@ $^
+	$(AR) rcs $@ $^
 
 clean:
-    rm -f $(OBJECTS) $(LIB)
+	rm -f $(OBJECTS) $(LIB)
