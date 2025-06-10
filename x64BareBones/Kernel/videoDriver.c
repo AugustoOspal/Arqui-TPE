@@ -97,29 +97,93 @@ uint16_t getRemainingScreenWidth(uint16_t x_coord)
     return getScreenWidth() - (x_coord);
 }
 
+// void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
+// {
+//     FontChar font = getCharBitMap(c);
+
+//     int height = font.height;
+//     int width = font.width;
+//     const uint32_t *bitmap;
+//     switch (width){
+//         case FONT_CHAR_WIDTH_BYTES:
+//             bitmap = (const uint8_t *)font.bitmap; // 1 byte por fila
+//             break;
+//         case FONT_CHAR_WIDTH_MEDIUM_BYTES:
+//             bitmap = (const uint16_t *)font.bitmap; // 2 bytes por fila
+//             break;
+//         case FONT_CHAR_WIDTH_LARGE_BYTES:
+//             bitmap = (const uint32_t *)font.bitmap; // 3 bytes por fila
+//             break;
+//         default:
+//     }
+
+//     if (bitmap == NULL)
+//         return;
+
+//     if (!isValidScreenPrint(x, y, width, height))
+//     {
+//         return;
+//     }
+
+//     uint32_t bit_mask = font.bitMask;
+//     for (unsigned int i = 0; i < height; i++)
+//     {
+//         for (unsigned int j = 0; j < width; j++) // MODIFICADO: quitado '* 8'
+//         {
+//             // 0x80 = 1000 0000b
+//             if (bitmap[i] & (bit_mask >> j))
+//             {
+//                 putPixel(hexColor, x + j, y + i);
+//             }
+//         }
+//     }
+// }
+
 void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
 {
-    font_char_p bitmap = getCharBitMap(c);
-    if (bitmap == NULL)
+    FontChar font = getCharBitMap(c);
+    if (font.bitmap == NULL)
         return;
 
-    if (!isValidScreenPrint(x, y, FONT_CHAR_WIDTH_BYTES, FONT_CHAR_HEIGHT_BYTES))
-    {
-        return;
-    }
+    int height = font.height;
+    int width  = font.width;
 
-    for (unsigned int i = 0; i < FONT_CHAR_HEIGHT_BYTES; i++)
-    {
-        for (unsigned int j = 0; j < FONT_CHAR_WIDTH_BYTES; j++) // MODIFICADO: quitado '* 8'
-        {
-            // 0x80 = 1000 0000b
-            if (bitmap[i] & (0x80 >> j))
-            {
-                putPixel(hexColor, x + j, y + i);
-            }
+    if (!isValidScreenPrint(x, y, width, height))
+        return;
+
+    uint32_t bit_mask = font.bitMask;
+
+    switch (width) {
+        case 8: { // SMALL
+            const uint8_t *bitmap = (const uint8_t *)font.bitmap;
+            for (int i = 0; i < height; i++)
+                for (int j = 0; j < 8; j++)
+                    if (bitmap[i] & (bit_mask >> j))
+                        putPixel(hexColor, x + j, y + i);
+            break;
         }
+        case 16: { // MEDIUM
+            const uint16_t *bitmap = (const uint16_t *)font.bitmap;
+            for (int i = 0; i < height; i++)
+                for (int j = 0; j < 16; j++)
+                    if (bitmap[i] & (bit_mask >> j))
+                        putPixel(hexColor, x + j, y + i);
+            break;
+        }
+        case 24: { // LARGE
+            const uint32_t *bitmap = (const uint32_t *)font.bitmap;
+            for (int i = 0; i < height; i++)
+                for (int j = 0; j < 24; j++)
+                    if (bitmap[i] & (bit_mask >> j))
+                        putPixel(hexColor, x + j, y + i);
+            break;
+        }
+        default:
+            // Fuente desconocida
+            return;
     }
 }
+
 
 static uint32_t uint64ToString(uint64_t value, char * buffer, uint32_t base)
 {
@@ -161,10 +225,11 @@ static uint32_t uint64ToString(uint64_t value, char * buffer, uint32_t base)
 
 void drawString(const char* str, uint32_t hexColor, uint64_t x, uint64_t y)
 {
+    int width = getWidth();
 	unsigned int strlen = strlenght(str);
 	for (unsigned int i = 0; i < strlen; i++)
 	{
-		drawChar(str[i], hexColor, x + (FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP) * i, y);
+		drawChar(str[i], hexColor, x + (width + FONT_CHAR_GAP) * i, y);
 	}
 }
 

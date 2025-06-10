@@ -1,6 +1,7 @@
 #include <syscalls.h>
 #include <videoDriver.h>
 
+
 #define STDIN  0
 #define STDOUT 1
 
@@ -18,7 +19,6 @@ static uint16_t y_coord = 0;
 extern uint64_t registers[];
 extern void load_registers();
 
-
 uint8_t isSpecialChar(char c) 
 {
     return (c == '\n' || c == '\r' || c == '\t' || c == '\b');
@@ -30,6 +30,9 @@ uint64_t sys_write(uint8_t fd, const char *str, uint64_t count)
     if (fd != STDOUT) 
         return 0; 
 
+    int width = getWidth();
+    int height = getHeight();
+
     for (uint64_t i = 0; i < count; i++) 
     {
         if (isSpecialChar(str[i])) 
@@ -37,33 +40,33 @@ uint64_t sys_write(uint8_t fd, const char *str, uint64_t count)
             switch (str[i]) 
             {
             case '\n':
-                y_coord += FONT_CHAR_HEIGHT_BYTES + FONT_CHAR_GAP;
+                y_coord += height + FONT_CHAR_GAP;
         
             case '\r':
                 x_coord = 0;
                 break;
 
             case '\t':
-                x_coord += (TAB_SPACES * (FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP));
+                x_coord += (TAB_SPACES * (width + FONT_CHAR_GAP));
                 if (x_coord >= getScreenWidth()) 
                 {
                     x_coord = x_coord % getScreenWidth();
-                    y_coord += FONT_CHAR_HEIGHT_BYTES + FONT_CHAR_GAP;
+                    y_coord += height + FONT_CHAR_GAP;
                 }
                 break;
 
             case '\b':
 
-                if (x_coord > FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP) 
+                if (x_coord > width + FONT_CHAR_GAP) 
                 {
-                    x_coord -= (FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP);
+                    x_coord -= (width + FONT_CHAR_GAP);
                 } 
                 else 
                 {
                     if (y_coord > 0) 
                     {
-                        y_coord -= (FONT_CHAR_HEIGHT_BYTES + FONT_CHAR_GAP);
-                        x_coord = getScreenWidth() - TAB_SPACES*(FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP) + x_coord;
+                        y_coord -= (height + FONT_CHAR_GAP);
+                        x_coord = getScreenWidth() - TAB_SPACES*(width+ FONT_CHAR_GAP) + x_coord;
                     } 
                     else 
                     {
@@ -73,21 +76,21 @@ uint64_t sys_write(uint8_t fd, const char *str, uint64_t count)
 
                 // TODO: Esto en vez del un espacio tendria que ser un caracter con todo
                 // el bit map en 1. Tambien sirve para el cursor
-                drawRectangle(FONT_CHAR_WIDTH_BYTES, FONT_CHAR_HEIGHT_BYTES, NEGRO, x_coord, y_coord);
+                drawRectangle(width, height, NEGRO, x_coord, y_coord);
                 break;
             }
         } 
 
         // TODO: Aca se podria optimizar con getRemainingScreenWidth
-        else if (isValidScreenPrint(x_coord, y_coord, FONT_CHAR_WIDTH_BYTES, FONT_CHAR_HEIGHT_BYTES)) 
+        else if (isValidScreenPrint(x_coord, y_coord, width, height)) 
         {
             drawChar(str[i], BLANCO, x_coord, y_coord);
-            x_coord += FONT_CHAR_WIDTH_BYTES + FONT_CHAR_GAP;
+            x_coord += width + FONT_CHAR_GAP;
         } 
         else 
         {
             x_coord = 0;
-            y_coord += FONT_CHAR_HEIGHT_BYTES + FONT_CHAR_GAP;
+            y_coord += height + FONT_CHAR_GAP;
         }
     }
 
@@ -159,11 +162,19 @@ void syscallDispatcher(Registers_t *regs)
             break;
 
         case 0x06:
-            drawString("ZOOM IN PERRO", VERDE, 200, 200);
+            void zoomInFont();
+            clearScreen();
+            x_coord = 0;
+            y_coord = 0;
+            //drawString("ZOOM IN PERRO", VERDE, 200, 200);
             break;
         
         case 0x07:
-            drawString("ZOOM OUT PERRO", VIOLETA, 250, 250);
+            void zoomOutFont();
+            clearScreen();
+            x_coord = 0;
+            y_coord = 0;
+            //drawString("ZOOM OUT PERRO", VIOLETA, 250, 250);
             break;
 
         case 0x10:
