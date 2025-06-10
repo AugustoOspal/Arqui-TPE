@@ -33,7 +33,10 @@ void sleep(uint64_t milliseconds) {
 	_sti();
 	while ((ticks - start_ticks) < target_ticks);
 	// Deshabilito los interrupts
-	_cli();
+
+
+	// TODO: Si dejaba esto no me andaba el teclado
+	// _cli();
 }
 
 // void getDateTime(dateTime *dt) {
