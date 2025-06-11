@@ -15,7 +15,8 @@ extern void load_registers();
 
 
 char* regs_strings[] = {" RAX: ", " RBX: ", " RCX: ", " RDX: ", " RSI: ", " RDI: ", 
-						" RBP: ", " RSP: ", " R8: ", " R9: ", " R10: ", " R11: ", " R12: ", " R13: ", " R14: ", " R15: ", " RIP: "};
+						" RBP: ", " RSP: ", " R8: ", " R9: ", " R10: ", " R11: ", 
+						" R12: ", " R13: ", " R14: ", " R15: ", " RIP: "};
 
 
 void exceptionDispatcher(int exception) {
@@ -42,11 +43,11 @@ static void invalid_operation_code(){
 	drawString("INVALID OPERATION CODE ERROR", 0xFF0000, 0, 0);
 }
 
-// void printRegisters(){
-//     load_registers();
-// 	for(int i = 0; i < CANT_REGS; i++) {
-// 		drawString(regs_strings[i]);
-// 		drawHexa(register_array[i], ROJO, 0, );
-// 		drawString("\n");
-// 	}
+void printRegisters(){
+    load_registers();
+	for(int i = 0; i < CANT_REGS; i++) {
+		drawString(regs_strings[i]);
+		drawHexa(register_array[i], ROJO, 0, );
+		drawString("\n");
+	}
 	
