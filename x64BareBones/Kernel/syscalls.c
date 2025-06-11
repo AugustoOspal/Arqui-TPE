@@ -148,8 +148,8 @@ void syscallDispatcher(Registers_t *regs)
 
         case 0x04:
             uint64_t *regsValues = (uint64_t *)arg1;
+            load_registers();
             for(int i = 0; i < 17; i++) {
-                load_registers();
                 regsValues[i] = registers[i];
             }
             regs->rax = 0;

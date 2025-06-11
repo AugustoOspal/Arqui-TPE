@@ -24,6 +24,8 @@ GLOBAL sys_zoomOut
 GLOBAL sys_playSound
 GLOBAL sys_sleepMilli
 
+GLOBAL opCodeException
+
 section .text
 
 %macro syscall 1
@@ -62,3 +64,7 @@ sys_playSound:          syscall 0x30
 
 ; Tiempo
 sys_sleepMilli:          syscall 0x40
+
+opCodeException:
+	ud2
+	ret

@@ -36,4 +36,6 @@ extern void sys_waitMilli(uint64_t milliseconds);
 // Sonido
 extern void sys_playSound(uint32_t frequency, uint32_t duration);
 
+extern void opCodeException();
+
 #endif

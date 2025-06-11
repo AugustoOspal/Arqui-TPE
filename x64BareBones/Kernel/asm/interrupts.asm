@@ -14,11 +14,17 @@ GLOBAL _irq04Handler
 GLOBAL _irq05Handler
 
 GLOBAL _exception0Handler
+GLOBAL _exception6Handler
 GLOBAL _int80Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN syscallDispatcher
+
+EXTERN getStackBase
+
+section .rodata
+    userland equ 0x400000
 
 SECTION .text
 
@@ -79,6 +85,13 @@ SECTION .text
 
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
+
+	call getStackBase
+
+	mov [rsp+24], rax
+
+	mov rax, userland
+	mov [rsp], rax
 
 	popState
 	iretq
@@ -144,6 +157,10 @@ _irq05Handler:
 ;Zero Division Exception
 _exception0Handler:
 	exceptionHandler 0
+
+;Invalid Operation Code
+_exception6Handler: 
+	exceptionHandler 6
 
 ; Manejador para la interrupcion 0x80h (syscalls)
 _int80Handler:
