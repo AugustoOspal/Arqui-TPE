@@ -6,7 +6,7 @@
 
 void playSound(uint32_t frequency, uint32_t duration);
 void playHitSound();
-void playStartMusic();    // Corregido el nombre
+void playStartMusic();
 void playHoleMusic();
 
 #endif

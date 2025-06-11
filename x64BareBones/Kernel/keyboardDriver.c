@@ -22,10 +22,6 @@ typedef struct {
     uint8_t caps_lock_on : 1;
     uint8_t ctrl : 1;
     uint8_t alt : 1;
-    // Se pueden agregar más aca si es necesario (num_lock, scroll_lock)
-    // uint8_t num_lock_on : 1;
-    // uint8_t scroll_lock_on : 1;
-    // uint8_t reserved : 1; // Para completar el byte si es necesario
 } ModifierState_t;
 
 // Inicializar todos los flags a 0
@@ -38,10 +34,6 @@ static const char scancode_to_ascii_map_normal[128] = {
     'q',  'w',  'e',  'r',  't',  'y',  'u',  'i',  'o',  'p',  '[',  ']',  '\n', 0,    'a',  's', // 0x10-0x1F (q-p, [, ], Enter, LCtrl, a, s)
     'd',  'f',  'g',  'h',  'j',  'k',  'l',  ';',  '\'', '`',  0,    '\\', 'z',  'x',  'c',  'v', // 0x20-0x2F (d-l, ;, ', `, LShift, \, z, x, c, v)
     'b',  'n',  'm',  ',',  '.',  '/',  0,    '*',    0,    ' ',  0,    0,    0,    0,    0,    0, // 0x30-0x3F (b-m, ,, ., /, RShift, Keypad *, LAlt, Space, CapsLock, F1-F10...)
-    // Completar con F-keys, keypad, etc. si es necesario. El índice 0 indica tecla no mapeada o no imprimible directamente.
-    // Scancodes importantes: 0x01 (ESC), 0x0E (Backspace), 0x0F (Tab), 0x1C (Enter), 0x39 (Space)
-    // 0x2A (LShift), 0x36 (RShift), 0x1D (LCtrl), 0x38 (LAlt), 0x3A (CapsLock)
-    // El resto de las entradas hasta 127 pueden ser 0.
 };
 
 // Caracteres con Shift presionado (o con CapsLock para letras si Shift no está presionado)
@@ -53,14 +45,12 @@ static const char scancode_to_ascii_map_shifted[128] = {
     // ...
 };
 
-// Buffer de Teclado
 #define KEYBOARD_BUFFER_SIZE 256
 static char keyboard_buffer[KEYBOARD_BUFFER_SIZE];
 static unsigned int buffer_write_idx = 0;
 static unsigned int buffer_read_idx = 0;
-static unsigned int buffer_count = 0; // Número de caracteres en el buffer
+static unsigned int buffer_count = 0;
 
-// Funcion de entrada desde irqDispatcher
 void keyboard_handler() {
     unsigned int scancode = getKeyCode();
 
@@ -86,7 +76,7 @@ void keyboard_handler() {
             kbd_modifier_state.rshift = is_press;
             return;
         case SC_CAPSLOCK_PRESS:
-            if (is_press) { // CapsLock es un toggle, actúa solo al presionar
+            if (is_press) { // CapsLock es un toggle, actúa solo al apretar
                 kbd_modifier_state.caps_lock_on = !kbd_modifier_state.caps_lock_on;
             }
             return;
@@ -142,28 +132,18 @@ void keyboard_handler() {
                 
 
             }
-            // else: Buffer lleno, el carácter se pierde. Se podría manejar de otra forma (ej. beep).
+            // else: Buffer lleno, el carácter se pierde. Se podría manejar de otra forma
         }
     }
 }
 
-// Función para leer del buffer
 char kbd_get_char() {
     if (buffer_count == 0)
         return 0; // Buffer vacío
 
-
-    // Deshabilitar interrupciones brevemente para acceso seguro al buffer si es necesario,
-    // aunque para un buffer simple leído por el mismo "hilo" del kernel no suele ser un problema.
-    // Si esta función puede ser llamada desde un contexto que podría interrumpir keyboard_handler,
-    // se necesitaría protección.
-    // _cli(); // Ejemplo de deshabilitar interrupciones
-
     char c = keyboard_buffer[buffer_read_idx];
     buffer_read_idx = (buffer_read_idx + 1) % KEYBOARD_BUFFER_SIZE;
     buffer_count--;
-
-    // _sti(); // Ejemplo de rehabilitar interrupciones
 
     return c;
 }

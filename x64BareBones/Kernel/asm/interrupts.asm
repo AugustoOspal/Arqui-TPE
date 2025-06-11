@@ -67,7 +67,7 @@ SECTION .text
 %macro irqHandlerMaster 1
 	pushState
 
-	mov rdi, %1 ; pasaje de parametro
+	mov rdi, %1
 	call irqDispatcher
 
 	; signal pic EOI (End of Interrupt)
@@ -83,7 +83,7 @@ SECTION .text
 %macro exceptionHandler 1
 	pushState
 
-	mov rdi, %1 ; pasaje de parametro
+	mov rdi, %1
 	call exceptionDispatcher
 
 	call getStackBase

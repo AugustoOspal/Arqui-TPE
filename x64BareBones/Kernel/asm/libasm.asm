@@ -200,7 +200,7 @@ getKeyCode:
 	test al, 0x01	; Comprobar el bit 0 (Output Buffer Full - OBF)
 	jz .exit_gk		; Si no está lleno (no hay tecla), saltar al final (RAX ya es 0)
 
-	; Una tecla está disponible, leerla
+					; Una tecla está disponible, leerla
 	in al, 60h 		; Leer el scancode del puerto de datos del teclado
 
 .exit_gk:
