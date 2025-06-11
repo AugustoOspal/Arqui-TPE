@@ -1,6 +1,4 @@
 #include <syscalls.h>
-#include <videoDriver.h>
-
 
 #define STDIN  0
 #define STDOUT 1
@@ -147,8 +145,9 @@ void syscallDispatcher(Registers_t *regs)
             break;
 
         case 0x04:
-            uint64_t *regsValues = (uint64_t *)arg1;
-            load_registers();
+            uint64_t *regsValues = (uint64_t*)arg1;
+            refresh_registers();
+            uint64_t * registers = get_registers(); // Carga los registros desde la pila
             for(int i = 0; i < 17; i++) {
                 regsValues[i] = registers[i];
             }

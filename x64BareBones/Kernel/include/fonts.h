@@ -42,4 +42,7 @@ void zoomInFont(void);
 void zoomOutFont(void);
 extern int currentFont;
 
+int getCurrentFontWidth(void);
+int getCurrentFontHeight(void);
+
 #endif

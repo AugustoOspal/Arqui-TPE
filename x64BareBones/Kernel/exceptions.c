@@ -1,6 +1,9 @@
 #include <stdint.h>
 #include <videoDriver.h>
 #include <syscalls.h>
+#include <color.h>
+#include <fonts.h>
+#include <lib.h>
 
 #define ZERO_EXCEPTION_ID 0
 #define INVALID_OPERATION_CODE_ID 6
@@ -10,17 +13,13 @@ static void zero_division();
 static void invalid_operation_code();
 void printRegisters();
 
-extern uint64_t register_array[];
-extern void load_registers();
-
-
 char* regs_strings[] = {" RAX: ", " RBX: ", " RCX: ", " RDX: ", " RSI: ", " RDI: ", 
 						" RBP: ", " RSP: ", " R8: ", " R9: ", " R10: ", " R11: ", 
 						" R12: ", " R13: ", " R14: ", " R15: ", " RIP: "};
 
 
 void exceptionDispatcher(int exception) {
-	load_registers();
+	refresh_registers();
 	switch (exception){
 		case ZERO_EXCEPTION_ID:
 			zero_division();
@@ -29,7 +28,7 @@ void exceptionDispatcher(int exception) {
 			invalid_operation_code();
 			break;
 	}
-	//printRegisters();
+	printRegisters();
 }
 
 
@@ -44,10 +43,14 @@ static void invalid_operation_code(){
 }
 
 void printRegisters(){
-    load_registers();
-	for(int i = 0; i < CANT_REGS; i++) {
-		drawString(regs_strings[i]);
-		drawHexa(register_array[i], ROJO, 0, );
-		drawString("\n");
+	unsigned int linesPrinted = 0;
+	unsigned int currentY = 0;
+
+	uint64_t *regs = get_registers();
+
+	for (int i = 0; i < CANT_REGS; i++) {
+		currentY = (getCurrentFontHeight() + FONT_CHAR_GAP) * linesPrinted++;
+		drawString(regs_strings[i], RED, 0, currentY);
+		drawHexa(regs[i], RED, 10, currentY);
 	}
-	
+}	

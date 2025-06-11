@@ -314,6 +314,14 @@ static const uint32_t font_masks[FONTS] = {
     FONT_MASK_SMALL
 };
 
+int getCurrentFontWidth(void) {
+    return font_widths[currentFont];
+}
+
+int getCurrentFontHeight(void) {
+    return font_heights[currentFont];
+}
+
 FontChar getCharBitMap(char c) {
     FontChar r = {0};
     if (c < FIRST_PRINTABLE_CHAR || c > LAST_PRINTABLE_CHAR) return r;
