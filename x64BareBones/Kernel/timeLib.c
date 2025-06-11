@@ -62,7 +62,7 @@ uint16_t getYear(){
 void getTime(dateTime *dt) {
 		dt->sec = getSec();
 		dt->min = getMin();
-		dt->hour = getHour()-3;
+		dt->hour = getHour();
 		dt->day = getDay();
 		dt->month = getMonth();
 		dt->year = getYear();
