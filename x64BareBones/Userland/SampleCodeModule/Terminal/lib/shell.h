@@ -2,7 +2,7 @@
 #define _SHELL_H_
 
 
-typedef enum {HELP = 0, PONGISGOLF, ZOOM_IN, ZOOM_OUT, CLEAR, DATE, REGISTERS, EXIT} command_id;
+typedef enum {HELP = 0, EXC_1, EXC_2, PONGISGOLF, ZOOM_IN, ZOOM_OUT, CLEAR, DATE, REGISTERS, EXIT} command_id;
 
 void startShell();
 void readInput();
@@ -16,5 +16,7 @@ void clear_screen();
 void startPongis();
 void zoom_in();
 void zoom_out();
+void exception_1();
+void exception_2();
 
 #endif

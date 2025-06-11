@@ -22,6 +22,8 @@ void _irq05Handler(void);
 // Interrupciones por software
 void _exception0Handler(void);
 
+void _exception6Handler(void);
+
 void _int80Handler(void);
 
 void _cli(void);
