@@ -34,16 +34,16 @@ void exceptionDispatcher(int exception) {
 
 static void zero_division() {
 	clearScreen();
-	drawString("ZERO DIVISION ERROR", 0xFF0000, 0, 0);
+	drawString("ZERO DIVISION ERROR", RED, 0, 0);
 }
 
 static void invalid_operation_code(){
 	clearScreen();
-	drawString("INVALID OPERATION CODE ERROR", 0xFF0000, 0, 0);
+	drawString("INVALID OPERATION CODE ERROR", RED, 0, 0);
 }
 
 void printRegisters(){
-	unsigned int linesPrinted = 0;
+	unsigned int linesPrinted = 1;
 	unsigned int currentY = 0;
 
 	uint64_t *regs = get_registers();
@@ -51,6 +51,6 @@ void printRegisters(){
 	for (int i = 0; i < CANT_REGS; i++) {
 		currentY = (getCurrentFontHeight() + FONT_CHAR_GAP) * linesPrinted++;
 		drawString(regs_strings[i], RED, 0, currentY);
-		drawHexa(regs[i], RED, 10, currentY);
+		drawHexa(regs[i], RED, 10 * (getCurrentFontWidth() + FONT_CHAR_GAP), currentY);
 	}
 }	

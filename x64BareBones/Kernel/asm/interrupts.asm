@@ -94,7 +94,7 @@ SECTION .text
 	mov [rsp], rax
 
 	popState
-	iretq
+	jmp userland
 %endmacro
 
 
