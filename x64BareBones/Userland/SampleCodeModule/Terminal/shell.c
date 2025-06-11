@@ -40,7 +40,7 @@ void startShell(){
     }
 }
 
-// Falta implementar la syscall read // 
+// Falta implementar la syscall read
 void readInput(char *buffer){
     char * c = buffer;
     int limit_count = 0;
@@ -75,7 +75,7 @@ command_id processInput(char* input){
     return index;
 }
 
-// Imprime todos los comandos disponibles // 
+// Imprime todos los comandos disponibles
 void help(){
     printf("Commands:\n");
     for(int i = 0; i < COMMAND_SIZE; i++) {
@@ -83,7 +83,7 @@ void help(){
     }
 }
 
-// Faltan las syscals del dateTime // 
+// Faltan las syscals del dateTime
 void printDateTime(){
     dateTime dt;
     getDateTime(&dt);

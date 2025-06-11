@@ -6,7 +6,6 @@ void keyboard_handler();
 
 // Función para que las aplicaciones/kernel obtengan un carácter del buffer
 // Retorna 0 si el buffer está vacío.
-// TODO: Hacer una syscall para que se pueda acceder desde userland
 char kbd_get_char();
 
 // Función de ASM para leer el scancode raw del puerto del teclado

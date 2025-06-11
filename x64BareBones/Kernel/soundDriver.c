@@ -41,7 +41,6 @@ void beep() {
     //set_PIT_2(old_frequency);
 }
 
-// TODO: Este despues pasarlo a userland
 void game_thud_sound() {
     play_sound(500);
     sleep(4);

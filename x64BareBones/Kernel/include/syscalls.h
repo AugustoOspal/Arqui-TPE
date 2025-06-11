@@ -10,7 +10,7 @@
 #include <lib.h>
 
 // Estructura para acceder a los registros guardados por pushState
-// El orden DEBE coincidir con el de la macro pushState en interrupts.asm
+// El orden tiene coincidir con el de la macro pushState en interrupts.asm
 typedef struct {
     uint64_t r15;
     uint64_t r14;

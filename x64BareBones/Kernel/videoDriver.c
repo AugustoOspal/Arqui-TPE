@@ -97,48 +97,6 @@ uint16_t getRemainingScreenWidth(uint16_t x_coord)
     return getScreenWidth() - (x_coord);
 }
 
-// void drawChar(char c, uint32_t hexColor, uint64_t x, uint64_t y)
-// {
-//     FontChar font = getCharBitMap(c);
-
-//     int height = font.height;
-//     int width = font.width;
-//     const uint32_t *bitmap;
-//     switch (width){
-//         case FONT_CHAR_WIDTH_BYTES:
-//             bitmap = (const uint8_t *)font.bitmap; // 1 byte por fila
-//             break;
-//         case FONT_CHAR_WIDTH_MEDIUM_BYTES:
-//             bitmap = (const uint16_t *)font.bitmap; // 2 bytes por fila
-//             break;
-//         case FONT_CHAR_WIDTH_LARGE_BYTES:
-//             bitmap = (const uint32_t *)font.bitmap; // 3 bytes por fila
-//             break;
-//         default:
-//     }
-
-//     if (bitmap == NULL)
-//         return;
-
-//     if (!isValidScreenPrint(x, y, width, height))
-//     {
-//         return;
-//     }
-
-//     uint32_t bit_mask = font.bitMask;
-//     for (unsigned int i = 0; i < height; i++)
-//     {
-//         for (unsigned int j = 0; j < width; j++) // MODIFICADO: quitado '* 8'
-//         {
-//             // 0x80 = 1000 0000b
-//             if (bitmap[i] & (bit_mask >> j))
-//             {
-//                 putPixel(hexColor, x + j, y + i);
-//             }
-//         }
-//     }
-// }
-
 static void putPixelIfValid(uint32_t color, int64_t x, int64_t y) {
     uint16_t w = getScreenWidth(), h = getScreenHeight();
     if (x >= 0 && x < w && y >= 0 && y < h)
@@ -256,14 +214,14 @@ void drawCircle(uint64_t radius, uint32_t hexColor, uint64_t x_center, uint64_t 
 // Para estas funciones, la que chequa si entran en la pantalla es drawString
 void drawDecimal(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y)
 {
-    char buffer[21]; // Max 20 digits for uint64_t in decimal + null terminator
+    char buffer[21];
     uint64ToString(value, buffer, 10);
     drawString(buffer, hexColor, x, y);
 }
 
 void drawHexa(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y)
 {
-    char buffer[19]; // "0x" + 16 hex digits for uint64_t + null terminator
+    char buffer[19];
     buffer[0] = '0';
     buffer[1] = 'x';
     uint64ToString(value, buffer + 2, 16);
@@ -272,7 +230,7 @@ void drawHexa(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y)
 
 void drawBin(uint64_t value, uint32_t hexColor, uint64_t x, uint64_t y)
 {
-    char buffer[67]; // "0b" + 64 binary digits for uint64_t + null terminator
+    char buffer[67];
     buffer[0] = '0';
     buffer[1] = 'b';
     uint64ToString(value, buffer + 2, 2);
