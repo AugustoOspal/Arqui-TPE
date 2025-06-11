@@ -7,7 +7,7 @@ void playSound(uint32_t frequency, uint32_t duration) {
 void playHitSound()
 {
     // Sonido de "thud" cuando el MIP golpea la pelota
-    playSound(300, 50);   // Tono bajo y corto
+    playSound(300, 100);   // Tono bajo y corto
     playSound(250, 50);   // Seguido de otro más grave
 }
 
