@@ -40,3 +40,13 @@ Dentro del directorio Arqui-TPE/x64BareBones, ejecutar:
 ```bash
 ./clean.sh
 ```
+
+### Cómo conseguir el hash MD5?
+
+Descarga el ZIP del proyecto desde GitHub. En la terminal, ejecuta:
+
+```bash
+md5sum Arqui-TPE-master.zip
+```
+
+El número que se mostrará es el hash MD5.
