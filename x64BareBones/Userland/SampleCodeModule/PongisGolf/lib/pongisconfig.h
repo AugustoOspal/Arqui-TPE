@@ -13,7 +13,6 @@
 #define MIP_EYE_RADIUS              5           // Porcentaje del radio del mip
 #define MIP_EYE_COLOR               BLACK
 
-
 #define BALL_COLOR                  BLUE
 #define BALL_RADIUS                 10
 #define BALL_INITIAL_SPEED          MIP_INITIAL_SPEED + 15
@@ -26,7 +25,6 @@
 #define HOLE_DEFAULT_Y              500
 
 #define LEVEL_COUNT                 1
-
 #define MAX_PLAYERS                 2
 
 #endif
