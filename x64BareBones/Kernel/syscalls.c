@@ -146,12 +146,21 @@ void syscallDispatcher(Registers_t *regs)
 
         case 0x04:
             uint64_t *regsValues = (uint64_t*)arg1;
-            refresh_registers();
-            uint64_t * registers = get_registers(); // Carga los registros desde la pila
-            for(int i = 0; i < 17; i++) {
-                regsValues[i] = registers[i];
+            if (!registersLoaded())
+            {
+                regsValues = NULL;
+                regs->rax = 1;                      // Codigo de error
             }
-            regs->rax = 0;
+
+            else
+            {
+                uint64_t * registers = get_registers(); // Carga los registros desde la pila
+                for(int i = 0; i < 17; i++) {
+                    regsValues[i] = registers[i];
+                }
+                regs->rax = 0;
+            }
+
             break;
 
         case 0x05:

@@ -125,6 +125,6 @@ void to_lower(char * str){
 }
 
 
-void get_regist(uint64_t *registers){
-    sys_getRegisters(registers);
+uint64_t get_regist(uint64_t *registers){
+    return sys_getRegisters(registers);
 }

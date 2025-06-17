@@ -1,6 +1,14 @@
 #ifndef _SHELL_H_
 #define _SHELL_H_
 
+#include <usrio.h>
+#include <stdint.h>
+#include <timeLib.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stringLib.h>
+#include <pongisLib.h>
+#include <videoLib.h>
 
 typedef enum {HELP = 0, EXC_1, EXC_2, PONGISGOLF, ZOOM_IN, ZOOM_OUT, CLEAR, DATE, REGISTERS, EXIT} command_id;
 

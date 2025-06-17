@@ -1,5 +1,4 @@
 #include <keyboardDriver.h>
-#include <stdint.h>
 
 // --- Definiciones de Scancodes (Set 1) ---
 // Teclas Modificadoras (Make codes)
@@ -50,6 +49,8 @@ static char keyboard_buffer[KEYBOARD_BUFFER_SIZE];
 static unsigned int buffer_write_idx = 0;
 static unsigned int buffer_read_idx = 0;
 static unsigned int buffer_count = 0;
+
+static bool areRegistersLoaded = false;
 
 void keyboard_handler() {
     unsigned int scancode = getKeyCode();
@@ -104,6 +105,19 @@ void keyboard_handler() {
             return;
         }
 
+         // Comandos
+        if (kbd_modifier_state.ctrl && char_normal == 'r')
+        {
+            refresh_registers();
+            areRegistersLoaded = true;
+            drawRectangle(5, 5, RED, getScreenWidth() - 6, getScreenHeight() - 6);
+            sleep(200);
+            drawRectangle(5, 5, GREEN, getScreenWidth() - 6, getScreenHeight() - 6);
+            sleep(200);
+            drawRectangle(5, 5, BLACK, getScreenWidth() - 6, getScreenHeight() - 6);
+            return;                     // Para que no lo agregue al buffer
+        }
+
         int is_alpha_lower = (char_normal >= 'a' && char_normal <= 'z');
         int any_shift_pressed = kbd_modifier_state.lshift || kbd_modifier_state.rshift;
 
@@ -122,7 +136,7 @@ void keyboard_handler() {
                 final_char = char_shifted;
             }
         }
-        
+
         // 3. Añadir el carácter procesado al buffer
         if (final_char != 0) {
             if (buffer_count < KEYBOARD_BUFFER_SIZE) {
@@ -135,6 +149,11 @@ void keyboard_handler() {
             // else: Buffer lleno, el carácter se pierde. Se podría manejar de otra forma
         }
     }
+}
+
+bool registersLoaded()
+{
+    return areRegistersLoaded;
 }
 
 char kbd_get_char() {

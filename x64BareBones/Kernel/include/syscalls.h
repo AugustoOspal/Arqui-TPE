@@ -3,11 +3,13 @@
 
 #include <fonts.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <videoDriver.h>
 #include <keyboardDriver.h>
 #include <soundDriver.h>
 #include <timeLib.h>
 #include <lib.h>
+#include <color.h>
 
 // Estructura para acceder a los registros guardados por pushState
 // El orden tiene coincidir con el de la macro pushState en interrupts.asm
