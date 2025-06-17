@@ -21,13 +21,24 @@ uint8_t checkValidScreenPosition(coordinateT position, uint32_t radius)
     return (x + radius < screenWidth && x >= radius && y + radius < screenHeight && y >= radius);
 }
 
+/*
+    TODO: Cosas para mejorar de startMenu:
+
+    -   Cuando el usuario ingresa la cantidad de jugadores o el color
+        se deberia mostrar en pantalla lo que el jugador esta seleccionando
+        mientras lo selecciona, y que termine de seleccionarlo cuando presione
+        enter.
+*/
 void startMenu(MipT mips[])
 {
     clearScreen();
     puts("Bienvenidos a Pongis Golf!");
     playStartMusic();
 
-    // TODO: Aca tiene que ver cuantos jugadores van a ser
+    // Seleccion de cantidad de jugadores
+    // unsigned int playersCounter = 0;
+    // printf("Seleccione la cantidad de jugadores: ");
+    
 
     unsigned int colorsCount = ARRAY_LEN(colors);
     for (unsigned int i = 0; i < MAX_PLAYERS; i++)
