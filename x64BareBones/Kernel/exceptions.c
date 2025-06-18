@@ -28,6 +28,7 @@ void exceptionDispatcher(Registers_t* regs, int exception) {
     printRegisters(regs);
 
     sleep(10000);
+	resetCursorCoord();
     clearScreen();
 }
 

@@ -17,6 +17,12 @@ static uint16_t y_coord = 0;
 Registers_t snapshot = { 0 };
 bool snapshotReady = false;
 
+void resetCursorCoord()
+{
+    x_coord = 0;
+    y_coord = 0;
+}
+
 void loadSnapshot(Registers_t *regs)
 {
     if (regs == NULL)
