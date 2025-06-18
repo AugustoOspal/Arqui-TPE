@@ -59,15 +59,19 @@ void endMenu(uint8_t winner)
         TODO: Arreglar esto
     */
 
+
     if (winner == 1)
     {
-        drawString(getScreenWidth() / 2, getScreenHeight() / 2, "Player 1 wins!!!", WHITE);
+        printf("Player 1 wins!!!\n");
+        //drawString(getScreenWidth() / 2, getScreenHeight() / 2, "Player 1 wins!!!", WHITE);
     }
 
     else if (winner == 2)
     {
-        drawString(getScreenWidth() / 2, getScreenHeight() / 2, "Player 2 wins!!!", WHITE);
+        printf("Player 2 wins!!!\n");
+        //drawString(getScreenWidth() / 2, getScreenHeight() / 2, "Player 2 wins!!!", WHITE);
     }
+
     playHoleMusic();
 }
 

@@ -48,7 +48,8 @@ void startPongisGolf()
     uint8_t mipDegree;
 
     char c;
-    while (1) {
+    int active = 1;
+    while (active) {
         c = getchar();
         switch (c) {
 
@@ -64,6 +65,7 @@ void startPongisGolf()
                 if (checkHoleCollision(&ball, &hole)) {
                     winner = 1;
                     endMenu(winner);
+                    active = 0;
                 }
                 break;
             case 'd': // Derecha
@@ -90,6 +92,7 @@ void startPongisGolf()
                     if (checkHoleCollision(&ball, &hole)) {
                         winner = 2;
                         endMenu(winner);
+                        active = 0;
                     }
                     break;
                 case 'l': // Derecha
@@ -106,5 +109,4 @@ void startPongisGolf()
         }
     }
 
-    return 0;
 }

@@ -28,7 +28,7 @@ void playHoleMusic()
     playSound(784, 200);  // Sol alto
     playSound(1047, 400); // Do súper alto
     
-    playSound(0, 100);
+    playSound(294, 150);
     
     // Acorde final
     playSound(523, 600);

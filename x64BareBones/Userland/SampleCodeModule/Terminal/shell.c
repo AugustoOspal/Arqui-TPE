@@ -93,6 +93,7 @@ void printDateTime(){
 void startPongis(){
     printf("Starting Pongis Golf...\n");
     startPongisGolf();
+    clear_screen();
 }
 
 void notACommand(char* input){
