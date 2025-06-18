@@ -80,22 +80,27 @@ SECTION .text
 %endmacro
 
 
-
 %macro exceptionHandler 1
-	pushState
+    pushState
 
-	mov rdi, %1
-	call exceptionDispatcher
+    ; Pasamos un puntero a los registros guardados (RSP) y el numero de excepcion
+    ; a nuestro manejador en C.
+    mov rdi, rsp
+    mov rsi, %1
+    call exceptionDispatcher
 
-	call getStackBase
+    ; Ahora modificamos el RIP guardado en la pila para que, al volver,
+    ; la ejecucion se reanude al principio del modulo de Userland (la shell).
+    ; La CPU guarda 5 registros (SS, RSP, RFLAGS, CS, RIP) en una interrupcion.
+    ; Nuestra macro pushState guarda 15 registros.
+    ; RIP está en [rsp + 15*8] = [rsp + 120] desde donde estaba RSP antes de esta llamada.
+    mov qword [rsp + 120], userland
 
-	mov [rsp+24], rax
+    popState
 
-	mov rax, userland
-	mov [rsp], rax
-
-	popState
-	jmp userland
+    ; Las excepciones 0 (Div by Zero) y 6 (Invalid Opcode) no pushean un 
+    ; error code, asi que solamente hacemos iretq para volver
+    iretq
 %endmacro
 
 
@@ -201,7 +206,9 @@ haltcpu:
 ; Esto al final por la forma en la que hacemos
 ; lo del teclado no la usamos por ahora
 get_registers:
-    mov rax, user_snapshot
+	pushState
+    mov rax, rsp
+	popState
     ret
 
 

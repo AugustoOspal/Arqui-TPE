@@ -1,56 +1,44 @@
-#include <stdint.h>
-#include <videoDriver.h>
-#include <syscalls.h>
-#include <color.h>
-#include <fonts.h>
-#include <lib.h>
+#include <exceptions.h>
 
-#define ZERO_EXCEPTION_ID 0
-#define INVALID_OPERATION_CODE_ID 6
 #define CANT_REGS 20
 
-static void zero_division();
-static void invalid_operation_code();
-void printRegisters();
-
+// Nombres de los registros para la impresión (deben coincidir con Registers_t)
 static const char* regs_strings[] = {
     "R15", "R14", "R13", "R12", "R11", "R10", "R9 ", "R8 ",
     "RSI", "RDI", "RBP", "RDX", "RCX", "RBX", "RAX",
     "RIP", "CS ", "FLG", "RSP", "SS "
 };
 
-void exceptionDispatcher(int exception) {
-	switch (exception){
-		case ZERO_EXCEPTION_ID:
-			zero_division();
-			break;
-		case INVALID_OPERATION_CODE_ID:
-			invalid_operation_code();
-			break;
-	}
-	printRegisters();
-}
+static const char *exception_messages[] = {
+    "Exception: Division by Zero",
+    "Exception: Invalid Opcode"
+};
 
+static void printRegisters(const Registers_t* regs);
 
-static void zero_division() {
+void exceptionDispatcher(Registers_t* regs, int exception) {
 	clearScreen();
-	drawString("ZERO DIVISION ERROR", RED, 0, 0);
+    // Imprimir mensaje de la excepcion
+    if (exception == ZERO_EXCEPTION_ID) {
+        drawString(exception_messages[0], RED, 0, 0);
+    } else if (exception == INVALID_OPERATION_CODE_ID) {
+        drawString(exception_messages[1], RED, 0, 0);
+    }
+
+    printRegisters(regs);
+
+    sleep(10000);
+    clearScreen();
 }
 
-static void invalid_operation_code(){
-	clearScreen();
-	drawString("INVALID OPERATION CODE ERROR", RED, 0, 0);
+static void printRegisters(const Registers_t* regs) {
+    uint64_t* regs_array = (uint64_t*)regs;
+    unsigned int linesPrinted = 2; // Empezar a imprimir debajo del mensaje de excepcion
+    unsigned int currentY = 0;
+
+    for (int i = 0; i < CANT_REGS; i++) {
+        currentY = (getCurrentFontHeight() + FONT_CHAR_GAP) * linesPrinted++;
+        drawString(regs_strings[i], RED, 0, currentY);
+        drawHexa(regs_array[i], RED, 10 * (getCurrentFontWidth() + FONT_CHAR_GAP), currentY);
+    }
 }
-
-void printRegisters(){
-	unsigned int linesPrinted = 1;
-	unsigned int currentY = 0;
-
-	uint64_t *regs = get_registers();
-
-	for (int i = 0; i < CANT_REGS; i++) {
-		currentY = (getCurrentFontHeight() + FONT_CHAR_GAP) * linesPrinted++;
-		drawString(regs_strings[i], RED, 0, currentY);
-		drawHexa(regs[i], RED, 10 * (getCurrentFontWidth() + FONT_CHAR_GAP), currentY);
-	}
-}	
