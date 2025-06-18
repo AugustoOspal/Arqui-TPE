@@ -28,7 +28,8 @@ void playHoleMusic()
     playSound(784, 200);  // Sol alto
     playSound(1047, 400); // Do súper alto
     
-    playSound(0, 100);
+    // esto da zero division exception
+    // playSound(0, 100);
     
     // Acorde final
     playSound(523, 600);

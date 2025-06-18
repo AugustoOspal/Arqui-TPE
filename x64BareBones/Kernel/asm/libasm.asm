@@ -13,9 +13,6 @@ GLOBAL getKeyCode
 GLOBAL outb
 GLOBAL inb
 
-GLOBAL refresh_registers
-GLOBAL get_registers
-
 section .text
 	
 cpuVendor:
@@ -219,36 +216,3 @@ inb:
     in al, dx
     movzx rax, al
     ret
-
-refresh_registers:
-    ; No lo pusheo para que no lo afecte
-    mov [registers], rax
-    mov [registers + 1*8], rbx
-    mov [registers + 2*8], rcx
-    mov [registers + 3*8], rdx
-    mov [registers + 4*8], rsi
-    mov [registers + 5*8], rdi
-    mov [registers + 6*8], rbp
-    mov [registers + 7*8], r8
-    mov [registers + 8*8], r9
-    mov [registers + 9*8], r10
-    mov [registers + 10*8], r11
-    mov [registers + 11*8], r12
-    mov [registers + 12*8], r13
-    mov [registers + 13*8], r14
-    mov [registers + 14*8], r15
-
-    mov rax, [rsp]          	; Lee RIP
-    mov [registers + 15*8], rax ; Guardo RIP
-
-    mov rax, rsp
-    mov [registers + 16*8], rax
-    ret
-
-
-get_registers:
-    mov rax, registers
-    ret
-
-section .bss
-    registers resq 17

@@ -34,5 +34,6 @@ typedef struct {
 
 
 void syscallDispatcher(Registers_t *regs);
+void loadSnapshot(Registers_t *regs);
 
 #endif /* SYSCALLS_H_ */

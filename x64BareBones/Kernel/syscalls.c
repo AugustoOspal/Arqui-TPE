@@ -14,8 +14,19 @@
 static uint16_t x_coord = 0;
 static uint16_t y_coord = 0;
 
-extern uint64_t registers[];
-extern void load_registers();
+Registers_t snapshot = { 0 };
+bool snapshotReady = false;
+
+void loadSnapshot(Registers_t *regs)
+{
+    if (regs == NULL)
+    {
+        return;
+    }
+
+    memcpy(&snapshot, regs, sizeof(Registers_t));
+    snapshotReady = true;
+}
 
 uint8_t isSpecialChar(char c) 
 {
@@ -145,22 +156,13 @@ void syscallDispatcher(Registers_t *regs)
             break;
 
         case 0x04:
-            uint64_t *regsValues = (uint64_t*)arg1;
-            if (!registersLoaded())
-            {
-                regsValues = NULL;
-                regs->rax = 1;                      // Codigo de error
-            }
-
-            else
-            {
-                uint64_t * registers = get_registers(); // Carga los registros desde la pila
-                for(int i = 0; i < 17; i++) {
-                    regsValues[i] = registers[i];
-                }
+            if (!snapshotReady) {
+                regs->rax = 1; // error: no hay snapshot
+            } else {
+                uint64_t *out = (uint64_t*)arg1;
+                memcpy(out, &snapshot, sizeof(Registers_t));
                 regs->rax = 0;
             }
-
             break;
 
         case 0x05:

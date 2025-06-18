@@ -14,7 +14,7 @@
 #define SC_CTRL_RELEASE     (SC_CTRL_PRESS | 0x80)
 #define SC_ALT_RELEASE      (SC_ALT_PRESS | 0x80)
 
-// Estructura para el Estado de las Teclas Modificadoras
+// Estructura para el estado de las teclas Modificadoras
 typedef struct {
     uint8_t lshift : 1;
     uint8_t rshift : 1;
@@ -50,11 +50,8 @@ static unsigned int buffer_write_idx = 0;
 static unsigned int buffer_read_idx = 0;
 static unsigned int buffer_count = 0;
 
-static bool areRegistersLoaded = false;
-
-void keyboard_handler() {
-    unsigned int scancode = getKeyCode();
-
+char procesScanCode(unsigned int scancode)
+{
     if (scancode == 0) {
         return;
     }
@@ -90,8 +87,8 @@ void keyboard_handler() {
     }
 
     // 2. Si es un "press" de una tecla no modificadora, procesar para agarrar el carácter
+    char final_char = 0;
     if (is_press) {
-        char final_char = 0;
         char char_normal = 0;
         char char_shifted = 0;
 
@@ -103,19 +100,6 @@ void keyboard_handler() {
         // Si es no imprimible o no esta mapeada
         if (char_normal == 0) {
             return;
-        }
-
-         // Comandos
-        if (kbd_modifier_state.ctrl && char_normal == 'r')
-        {
-            refresh_registers();
-            areRegistersLoaded = true;
-            drawRectangle(5, 5, RED, getScreenWidth() - 6, getScreenHeight() - 6);
-            sleep(200);
-            drawRectangle(5, 5, GREEN, getScreenWidth() - 6, getScreenHeight() - 6);
-            sleep(200);
-            drawRectangle(5, 5, BLACK, getScreenWidth() - 6, getScreenHeight() - 6);
-            return;                     // Para que no lo agregue al buffer
         }
 
         int is_alpha_lower = (char_normal >= 'a' && char_normal <= 'z');
@@ -136,24 +120,31 @@ void keyboard_handler() {
                 final_char = char_shifted;
             }
         }
+    }
+    return final_char;
+}
 
-        // 3. Añadir el carácter procesado al buffer
-        if (final_char != 0) {
-            if (buffer_count < KEYBOARD_BUFFER_SIZE) {
-                keyboard_buffer[buffer_write_idx] = final_char;
-                buffer_write_idx = (buffer_write_idx + 1) % KEYBOARD_BUFFER_SIZE;
-                buffer_count++;
-                
-
-            }
-            // else: Buffer lleno, el carácter se pierde. Se podría manejar de otra forma
-        }
+void loadCharToBuffer(char c) {
+    if (c != 0 && buffer_count < KEYBOARD_BUFFER_SIZE) {
+        keyboard_buffer[buffer_write_idx] = c;
+        buffer_write_idx = (buffer_write_idx + 1) % KEYBOARD_BUFFER_SIZE;
+        buffer_count++;
     }
 }
 
-bool registersLoaded()
+void keyboard_handler(Registers_t *regs)
 {
-    return areRegistersLoaded;
+    uint8_t scanCode = getKeyCode();
+    char c = procesScanCode(scanCode);
+
+    if (kbd_modifier_state.ctrl && (c == 'r' || c == 'R'))
+    {
+        loadSnapshot(regs);
+    }
+
+    else if (c != 0) {
+        loadCharToBuffer(c);
+    }
 }
 
 char kbd_get_char() {
