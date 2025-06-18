@@ -32,7 +32,11 @@ Dentro del directorio Arqui-TPE/x64BareBones, ejecutar:
 ### Ejecución
 Dentro del directorio Arqui-TPE/x64BareBones, ejecutar:
 ```bash
-./run.sh
+# Para linux
+./runLinux.sh
+
+# Para macOS
+./runMacOS.sh
 ```
 
 ### Limpieza de archivos temporales
