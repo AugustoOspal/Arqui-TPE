@@ -7,16 +7,17 @@
 
 #define ZERO_EXCEPTION_ID 0
 #define INVALID_OPERATION_CODE_ID 6
-#define CANT_REGS 17
+#define CANT_REGS 20
 
 static void zero_division();
 static void invalid_operation_code();
 void printRegisters();
 
-char* regs_strings[] = {" RAX: ", " RBX: ", " RCX: ", " RDX: ", " RSI: ", " RDI: ", 
-						" RBP: ", " RSP: ", " R8: ", " R9: ", " R10: ", " R11: ", 
-						" R12: ", " R13: ", " R14: ", " R15: ", " RIP: "};
-
+static const char* regs_strings[] = {
+    "R15", "R14", "R13", "R12", "R11", "R10", "R9 ", "R8 ",
+    "RSI", "RDI", "RBP", "RDX", "RCX", "RBX", "RAX",
+    "RIP", "CS ", "FLG", "RSP", "SS "
+};
 
 void exceptionDispatcher(int exception) {
 	switch (exception){

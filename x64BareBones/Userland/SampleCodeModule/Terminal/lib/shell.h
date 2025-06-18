@@ -10,7 +10,7 @@
 #include <pongisLib.h>
 #include <videoLib.h>
 
-typedef enum {HELP = 0, EXC_1, EXC_2, PONGISGOLF, ZOOM_IN, ZOOM_OUT, CLEAR, DATE, REGISTERS, EXIT} command_id;
+typedef enum {HELP = 0, EXC_1, EXC_2, PONGISGOLF, ZOOM_IN, ZOOM_OUT, CLEAR, DATE, REGISTERS, BUSY_WAIT, BUSY_WAIT_KERNEL, EXIT} command_id;
 
 void startShell();
 void readInput();
@@ -26,5 +26,7 @@ void zoom_in();
 void zoom_out();
 void exception_1();
 void exception_2();
+void busy_wait();
+void busy_wait_kernel();
 
 #endif

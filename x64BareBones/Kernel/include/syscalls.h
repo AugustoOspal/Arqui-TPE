@@ -12,7 +12,7 @@
 #include <color.h>
 
 // Estructura para acceder a los registros guardados por pushState
-// El orden tiene coincidir con el de la macro pushState en interrupts.asm
+// El orden tiene que coincidir con el de la macro pushState en interrupts.asm
 typedef struct {
     uint64_t r15;
     uint64_t r14;
@@ -28,7 +28,12 @@ typedef struct {
     uint64_t rdx;
     uint64_t rcx;
     uint64_t rbx;
-    uint64_t rax; // rax es el último en ser pusheado por pushState
+    uint64_t rax;
+    uint64_t rip;
+    uint64_t cs;
+    uint64_t rflags;
+    uint64_t rsp;
+    uint64_t ss;
 } Registers_t;
 
 
