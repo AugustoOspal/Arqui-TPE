@@ -30,7 +30,7 @@ extern void sys_zoomIn(void);
 extern void sys_zoomOut(void);
 
 extern void sys_getDateTime(dateTime *dt);
-extern void sys_getRegisters(uint64_t *registers);
+extern uint64_t sys_getRegisters(uint64_t *registers);
 extern void sys_waitMilli(uint64_t milliseconds);
 
 // Sonido

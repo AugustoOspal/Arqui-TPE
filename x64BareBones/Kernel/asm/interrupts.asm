@@ -1,4 +1,3 @@
-
 GLOBAL _cli
 GLOBAL _sti
 GLOBAL picMasterMask
@@ -17,10 +16,12 @@ GLOBAL _exception0Handler
 GLOBAL _exception6Handler
 GLOBAL _int80Handler
 
+GLOBAL get_registers
+
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN syscallDispatcher
-
+EXTERN keyboard_handler
 EXTERN getStackBase
 
 section .rodata
@@ -135,7 +136,23 @@ _irq00Handler:
 
 ;Keyboard
 _irq01Handler:
-	irqHandlerMaster 1
+    pushState
+
+	; En vez de llamar a irqMaster lo hacemos
+	; asi porque el otro ya tiene un ireq, 
+	; asi que toda la parte depues la llamada
+	; no se ejecutaria. Lo dejamos asi para que
+	; Este irtq funcione
+	mov rdi, rsp
+	call keyboard_handler
+
+	; signal pic EOI (End of Interrupt)
+	; Esto es por lo de no poder usar irqMaster
+	mov al, 20h
+	out 20h, al
+
+    popState
+    iretq
 
 ;Cascade pic never called
 _irq02Handler:
@@ -181,7 +198,12 @@ haltcpu:
 	hlt
 	ret
 
+; Esto al final por la forma en la que hacemos
+; lo del teclado no la usamos por ahora
+get_registers:
+    mov rax, user_snapshot
+    ret
 
 
 SECTION .bss
-	aux resq 1
+	user_snapshot resq 17

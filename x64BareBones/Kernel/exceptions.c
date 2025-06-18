@@ -19,7 +19,6 @@ char* regs_strings[] = {" RAX: ", " RBX: ", " RCX: ", " RDX: ", " RSI: ", " RDI:
 
 
 void exceptionDispatcher(int exception) {
-	refresh_registers();
 	switch (exception){
 		case ZERO_EXCEPTION_ID:
 			zero_division();

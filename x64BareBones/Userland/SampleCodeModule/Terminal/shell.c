@@ -1,23 +1,31 @@
 #include <shell.h>
-#include <usrio.h>
-#include <timeLib.h>
-#include <stringLib.h>
-#include <pongisLib.h>
-#include <videoLib.h>
-
 
 #define BUFFER 500
 #define COMMAND_SIZE 10
 #define SPECIAL_KEY_MAX_VALUE 5
 
-char* commands_str[] = {"help", "exception 1", "exception 2", "pongisgolf", "zoom in", "zoom out", "clear", "date", "registers", "exit"};
+char* commands_str[] = {
+    "help", "exception 1", "exception 2", 
+    "pongisgolf", "zoom in", "zoom out",
+     "clear", "date", "registers", "exit"
+    };
 
 
 typedef void (*ShellCommand)();
-static ShellCommand commands[] = {help, exception_1, exception_2, startPongis, zoom_in, zoom_out, clear_screen, printDateTime, getRegisters, exitShell};
+static ShellCommand commands[] = {
+    help, exception_1, exception_2, 
+    startPongis, zoom_in, zoom_out, 
+    clear_screen, printDateTime, getRegisters,
+    exitShell};
 
 
-char *registers[] = {" RAX: ", " RBX: ", " RCX: ", " RDX: ", " RSI: ", " RDI: ", " RBP: ", " RSP: ", " R8: ", " R9: ", " R10: ", " R11: ", " R12: ", " R13: ", " R14: ", " R15: ", " RIP: "};
+char *registers[] = {
+    " RAX: ", " RBX: ", " RCX: ",
+     " RDX: ", " RSI: ", " RDI: ",
+      " RBP: ", " RSP: ", " R8: ",
+       " R9: ", " R10: ", " R11: ",
+        " R12: ", " R13: ", " R14: ",
+         " R15: ", " RIP: "};
 
 void show_prompt() {
     printf("user@itba:> ");
@@ -101,9 +109,15 @@ void notACommand(char* input){
 }
 
 void getRegisters(){
-    printf(" CURRENT REGISTERS VALUES: \n");
     uint64_t regsValues[17];
-    get_regist(regsValues);
+
+    if (get_regist(regsValues) == 1)
+    {
+        printf("Registers are not loaded\nLoad them by pressing ctr + r\n");
+        return;
+    }
+
+    printf(" CURRENT REGISTERS VALUES: \n");
     for (int i = 0; i < 17; i++){
             printf("%s %x\n",registers[i], regsValues[i]);
     }   
